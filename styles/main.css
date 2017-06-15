@@ -1,0 +1,595 @@
+* {
+    box-sizing: border-box;
+    /*border: 1px solid white;*/
+}
+
+/*================================================================================/
+/*     Base View
+/*===============================================================================*/
+
+body {
+    color: white;
+    font-family: 'Droid Sans', sans-serif;
+    font-family: 'Proza Libre', sans-serif;
+    font-family: 'Quicksand', sans-serif;
+    font-family: 'Abel', sans-serif;
+    /*max-width: 1200px;*/
+    margin: 0 auto;
+}
+
+header {
+    background-image: url('../assets/foggy-woods.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    width: 100%;
+    height: 100vh;
+    float: left;
+    margin: 0 auto;
+    padding-top: 15px;
+    vertical-align: middle;
+    /*border: 1px solid white;*/
+}
+
+.title {
+    font-size: 40px;
+    float: left;
+    margin: 0;
+    margin-left: 10%;
+    font-family: 'Lobster', cursive;
+    font-family: 'Rubik', sans-serif;
+    font-family: 'Pacifico', cursive;
+}
+
+.header-nav {
+    /*font-family: 'Cabin Condensed', sans-serif;*/
+    position: relative;
+    display: inline-block;
+    float: right;
+    top: 16px;
+    margin-right: 12%;
+    font-size: 36px;
+}
+
+.header-nav:hover {
+    color: rgba(64, 44, 38, 0.8);
+}
+
+.results div {
+    overflow: hidden;
+}
+
+#landing-container {
+    max-width: 400px;
+    height: 100vh;
+    text-align: center;
+    margin: 40vh auto 0;
+    font-size: 25px;
+}
+
+#landing-container h1 {
+    margin: 0;
+}
+
+#landing-container h3 {
+    margin: 0;
+}
+
+#explore-btn {
+    display: block;
+    background: rgba(93, 64, 55, 0.8);
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+    width: 240px;
+    height: 60px;
+    line-height: 60px;
+    margin: 20px auto;
+    border: none;
+    transition: all 0.5s ease;
+}
+
+
+
+/*form.search-form.form-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.7);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+    width: 100%;
+    height: 70px;
+    transition: all 0.8s ease;
+}
+
+form.search-form.fixed-search-bar {
+    position: fixed;
+    padding-top: 10px;
+    transition: all 0.4s ease;
+}*/
+
+
+/*================================================================================/
+/*     Mobile only view
+/*===============================================================================*/
+
+@media only screen and (max-width: 669px) {
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 42px;
+        right: 0;
+        background-color: rgba(64, 44, 38, 1);
+        background: -webkit-linear-gradient(-90deg, rgba(64, 44, 38, 0.7), rgba(64, 44, 38, 1));
+        min-width: 160px;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        padding: 0;
+        margin: 0;
+        z-index: 1;
+    }
+
+    .dropdown-content li {
+        list-style: none;
+        padding: 3px;
+    }
+
+    .dropdown-content li:not(:last-of-type) {
+        border-bottom: 1px solid rgba(0,0,0,0.4);;
+    }
+
+    .dropdown-content li:hover {
+        background: rgba(64, 44, 38, 1);
+    }
+
+    .dropdown-content li:last-of-type:hover {
+        background: rgba(96, 66, 57, 1);
+    }
+
+    .dropdown-content li:nth-last-child(2):hover {
+        background: rgba(96, 66, 57, 1);
+    }
+
+    .dropdown-content a {
+        display: block;
+        text-decoration: none;
+        color: white;
+    }
+
+    .header-nav:hover .dropdown-content {
+        display: block;
+    }
+
+    #landing-container {
+        display: block;
+        /*height: 100vh;
+        text-align: center;
+        margin: 40vh auto 0;
+        font-size: 25px;*/
+    }
+
+
+    #explore-btn:hover {
+        background: rgba(64, 44, 38, 0.9);
+    }
+
+    
+    
+    /* * * * * * * Search Page (Mobile) * * * * * * */
+    main {
+        background: url('../assets/DSC01398-Edit.jpg');
+        background-position-x: 80%;
+        background-position-y: 50%;
+        /*background: url('../assets/teddy-kelley-70636.jpg');*/
+        background-attachment: fixed;
+        float: left;
+        height: 100vh;
+        width: 100%;
+    }
+
+    .form-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0,0,0,0.7);
+        box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+        width: 100%;
+        height: 100px;
+        transition: all 0.8s ease;
+    }
+
+    .search-form {
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        padding-top: 10px;
+    }
+
+    #query-label {
+        position: absolute;
+        top: 65px;
+        left: 50%;
+        margin-left: -70px;
+    }
+
+    #query {
+        width: 95%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        font-size: 24px;
+        border: none;
+        border-radius: 3px;
+        box-shadow: 0 0 15px 2px rgba(0,0,0,0.5);
+    }
+
+    #search-btn {
+        display: none;
+    }
+
+    #search-btn:hover {
+        background: rgba(93, 64, 55, 1);
+    }
+
+}
+
+
+/*================================================================================/
+/* 
+/*      Desktop View
+/*
+/*===============================================================================*/
+
+@media only screen and (min-width: 670px) {
+    /* * * * * * * * * * * Landing Page * * * * * * * * * * */
+
+    #burger {
+        display: none;
+    }
+
+    .header-nav ul {
+        margin: 0;
+    }
+
+    .header-nav li {
+        display: inline-block;
+        list-style: none;
+        margin-right: 20px;
+        font-size: 24px;
+        border-bottom: 2px solid transparent;
+        /*transition-property: border-bottom-color;
+        transition-duration: 200ms;
+        transition-timing-function: linear;*/
+        transition: all 200ms linear;
+    }
+
+    .header-nav li:hover {
+        border-bottom: 2px solid white;
+        border-bottom-color: rgba(255,255,255,0.6);
+    }
+
+    .header-nav a {
+        color: white;
+        text-decoration: none;
+    }
+
+    #explore-btn:hover {
+        background: rgba(64, 44, 38, 0.9);
+        cursor: pointer;
+
+        -webkit-transition: background 0.1s ease-in-out;
+        -moz-transition: background 0.1s ease-in-out;
+        transition: background 0.1s ease-in-out;
+    }
+
+    /* * * * * * * * * * * Search Page (Desktop) * * * * * * * */
+
+    main {
+        background: url('../assets/DSC01398-Edit.jpg');
+        /*background: url('../assets/teddy-kelley-70636.jpg');*/
+        background-attachment: fixed;
+        background-position-x: 80%;
+        background-position-y: 50%;
+        position: relative;
+        float: left;
+        height: 100%;
+        width: 100%;
+    }
+
+    .form-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0,0,0,0.7);
+        box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+        width: 100%;
+        height: 70px;
+        transition: all 0.8s ease;
+    }
+
+
+    .search-form {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: -30%;
+        width: 60%;
+        min-width: 700px;
+        padding: 40px;
+        text-align: center;
+    }
+
+    #query-label {
+        position: absolute;
+        top: 0;
+        left: 5px;
+        font-size: 24px;
+        width: 23%;
+        /*border: 1px solid white;*/
+        /*margin-top: 15px;*/
+    }
+
+    #query {
+        width: 80%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        font-size: 24px;
+    }
+
+    #search-btn {
+        background: rgba(93, 64, 55, 0.9);
+        color: white;
+        width: 100px;
+        height: 50px;
+        vertical-align: top;
+        font-size: 20px;
+        border: none;
+        border-radius: 5px;
+        transition: 0.2s ease-in-out;
+    }
+
+    #search-btn:hover {
+        background: rgba(129, 88, 75, 0.8);
+    }
+
+    /* * * * * * Results (Desktop) * * * * * */
+    .results {
+        max-width: 1400px;
+        height: 100vh;
+        margin: 180px auto;
+    }
+
+    .results div {
+        background: black;
+        display: inline-block;
+        float: left;
+        text-align: center;
+        width: 320px;
+        height: 180px;
+        margin-left: 1.5%;
+        margin-bottom: 10px;
+    }
+
+    .results img {
+        /*float: left;
+        margin-left: 1.5%;
+        margin-bottom: 10px;*/
+        transition: all 0.3s ease;
+    }
+
+    .results img:hover {
+        box-shadow: 0 0 20px 2px rgba(255,255,255,0.5);
+    }
+
+    .video-thumbnail {
+        max-height: 180px;
+    }
+
+
+    /* * * * * * Lightbox * * * * * */
+
+    .modal-filter {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        z-index: 1;
+    }
+
+    .lightbox {
+        color: rgba(217, 176, 140, 0.9);
+        color: rgba(97, 137, 47, 1);
+    }
+
+    .frame-container {
+        background: rgba(44, 53, 49, 1);
+        background: rgba(217, 176, 140, 0.6);
+        background: rgba(209, 232, 226, 0.6);
+        background: rgba(17, 100, 102, 0.6);
+
+        /*background: rgba(97, 137, 47, 0.6);*/
+        /*background: rgba(134, 194, 50, 0.6);*/
+        /*background: rgba(71, 75, 79, 0.6);*/
+        /*background: rgba(107, 110, 112, 0.6);*/
+
+        background: rgba(34, 38, 41, 0.9);
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        width: 80%;
+        min-width: 800px;
+        /*height: 500px;*/
+        margin-left: -40%;
+        margin-top: -250px;
+        border: 2px solid white;
+        z-index: 2;
+    }
+
+    label[for="times"] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 12px;
+        padding: 5px;
+        color: rgba(71, 75, 79, 1);
+    }
+
+    .video-info {
+        float: left;
+        width: 25%;
+        text-align: left;
+        border: 1px solid white;
+    }
+
+    .video-hx {
+        margin: 0;
+    }
+
+    #channel-name {
+        color: inherit;
+        text-decoration: none;
+    }
+    
+
+    #times {
+        color: rgba(209, 232, 226, 1);
+        color: rgba(134, 194, 50, 1);
+        font-size: 28px;
+        padding: 5px;
+    }
+
+    #times:hover {
+        cursor: pointer;
+    }
+
+    #frame {
+        width: 512px;
+        height: 288px;
+    }
+
+    #result-carousel {
+        background: rgba(17, 100, 102, 1);
+        background: rgba(44, 53, 49, 1);
+        background: rgba(107, 110, 112, 1);
+        overflow: hidden;
+        margin-top: 100px;
+    }
+
+    #result-carousel div {
+        background: black;
+        display: inline-block;
+        overflow: hidden;
+        min-width: 320px;
+    }
+
+    label[for="result-carousel"] {
+        display: block;
+        width: 200px;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .slide-label {
+        display: block;
+    }
+
+    .slick-slide {
+        margin-top: 15px;
+        margin-right: 10px;
+    }
+
+    .slick-slide:hover {
+        /*box-shadow: 0 0 15px 8px rgba(0,0,100,0.6);*/
+        box-shadow: 0 0 15px 8px rgba(134, 194, 50, 0.3);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    
+
+    .slick-dots li.slick-active button:before {
+        color: rgba(209, 232, 226, 1);
+        font-size: 10px;
+    }
+
+    .slick-dots li button:before {
+        color: rgba(209, 232, 226, 1);
+        font-size: 10px;
+    }
+
+
+
+    footer {
+        width: 100%;
+        height: 100px;
+        background: rgba(159,173,115, 0.9);
+        background: rgba(52, 81, 94, 1);
+        background: rgba(96, 125, 139, 0.9);
+    }
+
+    .footer-nav {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .footer-nav li {
+        display: inline-block;
+        margin-right: 15px;
+        border-bottom: 2px solid transparent;
+        transition: all 200ms linear;
+    }
+
+
+    .footer-nav li:first-of-type {
+        margin-right: 100px;
+    }
+
+    .footer-nav li:hover {
+        border-bottom: 2px solid white;
+        border-bottom-color: rgba(255,255,255,0.6);
+    }
+
+    .footer-nav a {
+        color: black;
+        font-weight: bold;
+        text-decoration: none;
+    }
+}
+
+
+/*.form-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.7);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+    width: 100%;
+    height: 70px;
+    transition: all 0.8s ease;
+}*/
+
+.fixed-search-bar {
+    position: fixed;
+    top: 0;
+    padding-top: 10px;
+    transition: all 0.4s ease;
+}
+
+.hidden {
+    display: none;
+}
+
+.clearfix {
+    clear: both;
+}
+
+
+/*rgb(193,193,119)  Lighter */
+
+/*rgb(159,173,115)  Light  */
+
+/*rgb(81,106,69)    Dark */
+
+/*rgb(75,93,63)*/
