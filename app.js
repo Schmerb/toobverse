@@ -114,13 +114,6 @@ function closeLightbox() {
 }
 
 function loadCarousel() {
-    // var slides = state.thumbnails.map(function(thumbnail) {
-    //     var slide = `<div>
-    //                     ${thumbnail}
-    //                     <label></label>
-    //                  </div>`;
-    //     return slide;
-    // });
     $(RESULT_CAROUSEL).html(state.thumbnails.join(''));
     initLightboxCarousel();
 }
@@ -324,7 +317,7 @@ $(function() {
     lightboxCarouselVideoClick();
     closeLightboxClick();
 
-    initLightboxCarousel();
+    // initLightboxCarousel();
     // searchYouTube('night grinderz 2017', function(resp) {
     //     resp.items.forEach(function(item) {
     //         console.log(item.snippet.thumbnails.medium.url);
