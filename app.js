@@ -595,7 +595,7 @@ function liveVideoClick() {
         e.preventDefault();
         smoothScroll('main');
         showBrowseVideos();
-        $(BROWSE_VIDEOS_SPAN).text('Browse Live Videos');
+        $(BROWSE_VIDEOS_SPAN).text('Browse Live Music Channels');
         liveVideoHandler();
     });
 }
