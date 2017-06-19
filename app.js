@@ -7,6 +7,7 @@ var state = {
     currentlyEnlarged: false,
     search_results: [],
     thumbnails: [],
+    cached_thumbnails_pages: [],
     mobile: false,
     isSlick: false
 };
@@ -21,18 +22,27 @@ var _4K_NAV_ITEM = '.nav-4k'
 
 var FORM_CONTAINER = '#form-container';
 var SEARCH_CONTAINER = '#search-container';
+var SEARCH_NAV = '.search-nav';
+
+
+var SEARCH_DROPDOWN_CONTENT = '.search-dropdown-content';
 var SEARCH_FORM = '.search-form';
 var HD_CHECKBOX = '#hd-checkbox';
-var _4K_CHECKBOX = '#4k-checkbox';
+var _4K_CHECKBOX = '#_4k-checkbox';
 var QUERY = '#query';
 var USER_QUERY_LABEL = '#query-label';
 var USER_QUERY = '.user-query';
+var USER_QUERY_WRAP = '.user-query-wrap';
 var RESULTS_TYPE = '#results-type';
-var SEARCH_RESULTS_SPAN = '#search-results-span';
-var BROWSE_VIDEOS_SPAN = '#browse-videos-span';
+var SEARCH_RESULTS_SPAN = '.search-results-span';
+var BROWSE_VIDEOS_SPAN = '.browse-videos-span';
+var RESULTS_CONTAINER = '.results-container';
 var RESULTS = '.results';
 var VIDEO_THUMBNAIL = '.video-thumbnail';
 var PAGE_CONTROLS_CONTAINER = '.page-controls-container';
+var NEXT_PAGE_BTN = '#next-page-btn';
+var PREV_PAGE_BTN = '#prev-page-btn';
+
 
 var LIGHTBOX = '.lightbox';
 var NEW_SEARCH_TIMES_LABEL = '#new-search-times-label';
@@ -72,8 +82,16 @@ function displayResults(resp) {
         return $video_img;
     });
     state.thumbnails = videos;
-    $(RESULTS).empty().append(videos.join(''));
-    $(PAGE_CONTROLS_CONTAINER).removeClass('hidden');
+    $(RESULTS).empty()
+              .append(videos.join(''))
+              .addClass('results-filter');
+    if(resp.items.length > 0) {
+        $(RESULTS).removeClass('hidden');
+        $(PAGE_CONTROLS_CONTAINER).removeClass('hidden');
+    } else {
+        $(RESULTS).addClass('hidden');
+        $(PAGE_CONTROLS_CONTAINER).addClass('hidden');
+    }
 }
 
 
@@ -95,6 +113,7 @@ function openLightbox(video_img, index) {
     $(LIGHTBOX).removeClass('hidden');
     updateCurrentVideo(video_img);
     loadCarousel(index);
+    dynamicQueryLabelFontSize(SEARCH_RESULTS_SPAN,'label[for="result-carousel"]');
 }
 
 
@@ -130,14 +149,25 @@ function setVideoDimensions(enlarge) {
         width = '1024px';
         height = '576px';
         $(NEW_SEARCH_TIMES_LABEL).addClass('hidden');
+        $(ENLARGE_BTN).addClass('hidden');
+        $(MINIMIZE_BTN).addClass('hidden');
+        $('label[for="enlarge"]').addClass('hidden');
+        
         $(FRAME_CONTAINER).addClass('wide');
         $(TIMES_ICON).addClass('hd-4k');
         $(RESULT_CAROUSEL).addClass('hd-4k');
         $(TIMES_ICON).addClass('hd-4k');
+
+        // minimizeCarousel();
     } else {
         $(NEW_SEARCH_TIMES_LABEL).removeClass('hidden');
+        $(ENLARGE_BTN).removeClass('hidden');
+        $(MINIMIZE_BTN).removeClass('hidden');
+        $('label[for="enlarge"]').removeClass('hidden');
         $(FRAME_CONTAINER).removeClass('wide');
         $(TIMES_ICON).removeClass('hd-4k');
+
+        // enlargeCarousel();
     }
     $(FRAME).css({
         width: width,
@@ -151,6 +181,10 @@ function setVideoDimensions(enlarge) {
 function closeLightbox() {
     $(FRAME).attr('src', ''); //$(FRAME).attr('src').slice(0, -1) + '0'
     $(LIGHTBOX).addClass('hidden');
+    $(VIDEO_THUMBNAIL).removeClass('small-video-thumbnail');
+    $(RESULT_CAROUSEL).removeClass('small-carousel');
+    $('.slick-track').removeClass('small-slick-track');
+    $('.slick-slide').removeClass('small-slick-slide');
 }
 
 //
@@ -170,6 +204,32 @@ function hideEnlargeIcon() {
     $(ENLARGE_BTN).addClass('hidden');
     $('label[for="enlarge"]').addClass('hidden');
     $('label[for="minimize"]').removeClass('hidden');
+}
+
+//
+//
+//
+function minimizeCarousel() {
+    $(VIDEO_THUMBNAIL).addClass('small-video-thumbnail');
+    $(RESULT_CAROUSEL).addClass('small-carousel');
+    $('.slick-track').addClass('small-slick-track');
+    $('.slick-slide').addClass('small-slick-slide');
+
+    var currentSlide = $('.responsive').slick('slickCurrentSlide');
+    $('.responsive').slick('slickGoTo', currentSlide, true);
+}
+
+//
+//
+//
+function enlargeCarousel() {
+    $(VIDEO_THUMBNAIL).removeClass('small-video-thumbnail');
+    $(RESULT_CAROUSEL).removeClass('small-carousel');
+    $('.slick-track').removeClass('small-slick-track');
+    $('.slick-slide').removeClass('small-slick-slide');
+
+    var currentSlide = $('.responsive').slick('slickCurrentSlide');
+    $('.responsive').slick('slickGoTo', currentSlide, true);
 }
 
 //
@@ -216,7 +276,7 @@ function initLightboxCarousel(index) {
         initialSlide: index,
         variableWidth: true,
         centerMode: false,
-        focusOnSelect: true,
+        focusOnSelect: false,
         responsive: [
             {
             breakpoint: 1024,
@@ -276,7 +336,7 @@ function checkSizeHandler() {
 }
 
 function checkSize() {
-    // debugger;
+    // ;
     (Number($("body").css('width').slice(0, -2)) <= 700) ? state.mobile = true : state.mobile = false;
 }
 
@@ -289,13 +349,19 @@ function fixedSearchBar() {
         // console.log(scroll);
         if(scroll > $(window).height()) {
             $(SEARCH_FORM).addClass('fixed-search-bar');
+            $(SEARCH_NAV).addClass('fixed-search-bar');
+            $(SEARCH_DROPDOWN_CONTENT).addClass('fixed');
             $(FORM_CONTAINER).addClass('form-backdrop');
+            $(RESULTS + ' div:first-of-type').addClass('mobile-results-adjust');
             if (!state.mobile) {
                 // $(USER_QUERY_LABEL).css({marginTop: '10px'});
             } 
         } else {
             $(SEARCH_FORM).removeClass('fixed-search-bar');
+            $(SEARCH_NAV).removeClass('fixed-search-bar');
+            $(SEARCH_DROPDOWN_CONTENT).removeClass('fixed');
             $(FORM_CONTAINER).removeClass('form-backdrop');
+            $(RESULTS + ' div:first-of-type').removeClass('mobile-results-adjust');
             $(USER_QUERY_LABEL).css({marginTop: ''});
         }
         
@@ -305,9 +371,10 @@ function fixedSearchBar() {
 //
 //
 //
-function smoothScroll(target) {
+function smoothScroll(target, fixed) {
+    var fixed_offset = fixed ? 30 : 0;
     $('body, html').animate({
-        scrollTop: $(target).offset().top
+        scrollTop: $(target).offset().top + fixed_offset
     }, 800);
 }
 
@@ -331,6 +398,8 @@ function responsiveIframes() {
     }).resize();
 }
 
+
+
 //================================================================================
 // API handlers
 //================================================================================
@@ -339,31 +408,45 @@ function responsiveIframes() {
 //
 //
 function searchYoutubeHandler() { 
-    var query = state._4k_filter ? `${state.user_query} 4k` : state.user_query;
-    var quality = state.hd_filter ? 'high' : 'any'
-    searchYouTube(query, quality, 'any', 'relevance', function(resp) {
-        state.search_results = resp.items;
-        console.log(resp);
-        $(USER_QUERY_LABEL).removeClass('hidden');
-        $(USER_QUERY).text(state.user_query);
-        if (state._4k_filter) {
-            $(RESULTS_TYPE).text('4K');
-        } else if (state.hd_filter) {
-            $(RESULTS_TYPE).text('HD');
-        } else {
-            $(RESULTS_TYPE).empty();
-        }
-        showUserQuery();
-        displayResults(resp);
-    }, 20);
+   if(state._4k_filter) {
+        _4kVideoHandler(state.user_query);
+    } else {
+        var quality = state.hd_filter ? 'high' : 'any';
+        searchYouTube(state.user_query, quality, 'any', 'relevance', function(resp) {
+            state.search_results = resp;
+            console.log(resp);
+            $(USER_QUERY_LABEL).removeClass('hidden');
+            $(USER_QUERY).text(state.user_query);
+            if (state.hd_filter) {
+                $(RESULTS_TYPE).text('HD');
+            } else {
+                $(RESULTS_TYPE).empty();
+            }
+            showUserQuery();
+            displayResults(resp);
+            dynamicQueryLabelFontSize(SEARCH_RESULTS_SPAN, USER_QUERY_LABEL);
+        }, 50);
+    }
 }
 
 //
 //
 //
-function liveVideoHandler() {
-    searchLiveVideos('live', function(resp) {
-        state.search_results = resp.items;
+function searchByPageTokenHandler(pageToken) {
+    searchYouTubePageToken(state.user_query, 'any', 'any', 'relevance', pageToken, function(resp) {
+            state.search_results = resp;
+            smoothScroll('main');
+            displayResults(resp);
+        }, 50);
+}
+
+
+//
+//
+//
+function liveVideoHandler(category_id) {
+    searchLiveVideos('live', category_id, function(resp) {
+        state.search_results = resp;
         displayResults(resp);
     }, 50);
 }
@@ -371,12 +454,18 @@ function liveVideoHandler() {
 //
 //
 //
-function _4kVideoHandler() {
-    searchYouTube('4K', 'high', 'any',  'relevance', function(resp) {
-        state.search_results = resp.items;
+function _4kVideoHandler(query) {
+    var q = arguments.length > 0 ? `${query} 4K` : '4K';
+    searchYouTube(q, 'high', 'any',  'relevance', function(resp) {
+        state.search_results = resp;
         $(USER_QUERY_LABEL).removeClass('hidden');
         $(RESULTS_TYPE).text('4K');
+        if(q.length > 2) {
+            $(USER_QUERY).text(query);
+            showUserQuery();
+        }
         displayResults(resp);
+        dynamicQueryLabelFontSize(SEARCH_RESULTS_SPAN, USER_QUERY_LABEL);
     }, 50);
 }
 
@@ -414,7 +503,33 @@ function searchYouTube(searchTerm, quality, type, order, callback, maxResults) {
 //
 //
 //
-function searchLiveVideos(status, callback, maxResults) {
+function searchYouTubePageToken(searchTerm, quality, type, order, 
+                                pageToken, callback, maxResults) {
+    if(arguments.length == 1) {
+        callback = printToConsole;
+        maxResults = 50;
+    } else if (arguments.length == 4) {
+        maxResults = 50;
+    }
+    var SEARCH_URL = YOUTUBE_BASE_URL + 'search/';
+    var query = {
+        key: 'AIzaSyCtbQ7eOypMc7OKBSGFs46aIL6Ozmmeygw',
+        part: 'snippet',
+        q: searchTerm,
+        type: 'video',
+        videoDefinition: quality, //any,high,standard
+        videoType: type,          //any,episode,movie
+        order: order,
+        pageToken: pageToken,
+        maxResults: maxResults
+    };
+    $.getJSON(SEARCH_URL, query, callback);
+}
+
+//
+//
+//
+function searchLiveVideos(status, category_id, callback, maxResults) {
     if(arguments.length == 1) {
         callback = printToConsole;
         maxResults = 25;
@@ -428,9 +543,12 @@ function searchLiveVideos(status, callback, maxResults) {
         type: 'video',
         eventType: status, // completed,live,upcoming
         // order: 'viewCount',
-        videoCategoryId: '10',
         maxResults: maxResults
     };
+    // ;
+    if (category_id != 'all') {
+        query.videoCategoryId = category_id;
+    }
     $.getJSON(SEARCH_URL, query, callback);
 }
 
@@ -472,7 +590,7 @@ function internetVideoArchive() {
     var dt = new Date();
     dt.setMonth(11);
     var stamp = dt.toISOString();
-    debugger;
+    ;
     // var ivaUrl = 'https://ee.iva-api.com/ExternalIds/ImdbMovie';
     var query = {
         // Skip: 0,
@@ -487,10 +605,14 @@ function internetVideoArchive() {
     });
 }
 
+
+
 //================================================================================
 // Event Listeners
 //================================================================================
 
+//
+//
 function scrollToSearchBar() {
     $(EXPLORE).on('click', function(e) {
         e.preventDefault();
@@ -499,6 +621,8 @@ function scrollToSearchBar() {
     });
 }
 
+//
+//
 function scrollToTop() {
     $(TOP).on('click', function(e) {
         e.preventDefault();
@@ -506,24 +630,72 @@ function scrollToTop() {
     });
 }
     
-
+//
+//
 function searchFormSubmit() {
     $(SEARCH_FORM).on('submit', function(e) {
         e.preventDefault();
-        smoothScroll('main');
+        smoothScroll('main', true);
         state.user_query = $(QUERY).val();
         $(QUERY).val('');
         searchYoutubeHandler();
+        
     });
 }
 
+//
+//
+//
+function dynamicQueryLabelFontSize(target, container) {
+    var $target = $(target);
+    $target.css('font-size', '24px');
+    ;
+    while($target.height() > $(container).height()) {
+        console.log('target height', $target.height());
+        console.log('container height', $(container).height());
+        $target.css('font-size', (parseInt($target.css('font-size').slice(0,-2) - 1)) + 'px');
+    }  
+    console.log('FINAL target height', $target.height());
+    console.log('FINAL container height', $(container).height()); 
+}
+
+
+//
+//
+function getNextPageClick() {
+    $(NEXT_PAGE_BTN).on('click', function(e) {
+        e.preventDefault();
+        searchByPageTokenHandler(state.search_results.nextPageToken);
+        $(PREV_PAGE_BTN).removeClass('toggled');
+    });
+}
+
+//
+//
+function getPrevPageClick() {
+    $(PREV_PAGE_BTN).on('click', function(e) {
+        e.preventDefault();
+        if (state.search_results.hasOwnProperty('prevPageToken')) {
+            searchByPageTokenHandler(state.search_results.prevPageToken);
+        } else {
+            $(PREV_PAGE_BTN).addClass('toggled');
+        }
+    });
+}
+
+//
+//
 function hdVideoFilterCheck() {
     $(HD_CHECKBOX).on('change', function(e) {
+        // alert('hd checked!');
+        // ;
         e.preventDefault();
         state.hd_filter = this.checked ? true : false;
     });
 }
 
+//
+//
 function _4kVideoFilterCheck() {
     $(_4K_CHECKBOX).on('change', function(e) {
         e.preventDefault();
@@ -531,6 +703,8 @@ function _4kVideoFilterCheck() {
     });
 }
 
+//
+//
 function allowOnlyOneCheckbox() {
     $('input[type="checkbox"').on('change', function(e) {
         e.preventDefault();
@@ -546,6 +720,8 @@ function allowOnlyOneCheckbox() {
     });
 }
 
+//
+//
 function playVideoLightboxClick() {
     $(RESULTS).on('click', VIDEO_THUMBNAIL, function(e) {
         e.preventDefault();
@@ -554,33 +730,43 @@ function playVideoLightboxClick() {
     });
 }
 
+//
+//
 function enlargeVideoClick() {
     $(ENLARGE_BTN).on('click', function(e) {
         e.preventDefault();
         state.currentlyEnlarged = true;
         hideEnlargeIcon();
         setVideoDimensions(state.currentlyEnlarged);
+        minimizeCarousel();
     });
 }
 
+//
+//
 function minimizeVideoClick() {
     $(MINIMIZE_BTN).on('click', function(e) {
         e.preventDefault();
         state.currentlyEnlarged = false;
         hideMinimizeIcon();
         setVideoDimensions();
+        enlargeCarousel();
     });
 }
 
+//
+//
 function lightboxCarouselVideoClick() {
-    $(LIGHTBOX).on('click', VIDEO_THUMBNAIL, function(e) {
+    $(LIGHTBOX).on('click', '.slick-slide', function(e) {
         e.preventDefault();
-        updateCurrentVideo($(this));
+        updateCurrentVideo($(this).children(VIDEO_THUMBNAIL));
     });
 }
 
+//
+//
 function closeLightboxClick() {
-    $(document).on('click', MODAL_FILTER + ', ' + TIMES_ICON,function(e) {
+    $(document).on('click', MODAL_FILTER + ', ' + TIMES_ICON, function(e) {
         e.preventDefault();
         if (e.target == $(MODAL_FILTER)[0] || e.target == $(TIMES_ICON)[0]) {
             unslickCarousel();
@@ -590,42 +776,46 @@ function closeLightboxClick() {
     });
 }
 
+//
+//
 function liveVideoClick() {
-    $(LIVE).on('click', function(e) {
-        e.preventDefault();
-        smoothScroll('main');
-        showBrowseVideos();
-        $(BROWSE_VIDEOS_SPAN).text('Browse Live Music Channels');
-        liveVideoHandler();
+    live_channels.forEach(function(channel) {
+        $(channel.selector).on('click', function(e) {
+            e.preventDefault();
+            smoothScroll('main', true);
+            showBrowseVideos();
+            $(BROWSE_VIDEOS_SPAN).text(channel.text);
+            liveVideoHandler(channel.category);
+            $(USER_QUERY).empty();
+            $(USER_QUERY_WRAP).addClass("hidden");
+        });
     });
 }
 
+//
+//
 function _4kVideoClick() {
     $(_4K_NAV_ITEM).on('click', function(e) {
         e.preventDefault();
-        smoothScroll('main');
+        smoothScroll('main', true);
         showBrowseVideos();
         $(BROWSE_VIDEOS_SPAN).text('Browse 4K Videos');
+        // ;
         _4kVideoHandler();
+        $(USER_QUERY).empty();
+        $(USER_QUERY_WRAP).addClass("hidden");
     });
 }
 
-function getNextPage() {
-    // Implement for each api call
-    // make sure maxResults and offset is correct for Each api call
-}
-
-function getPrevPage() {
-    // Implement for each api call
-    // make sure maxResults and offset is correct for Each api call
-}
-
+//
+//
 function slickEvents() {
     // On edge hit
     $('.responsive').on('edge', function(event, slick, direction){
         console.log('edge was hit')
     });
 }
+
 
 //================================================================================
 // Event groups
@@ -634,11 +824,14 @@ function slickEvents() {
 function searchEventListeners() {
     searchFormSubmit();
     fixedSearchBar();
+    dynamicQueryLabelFontSize();
     liveVideoClick();
     _4kVideoClick();
     hdVideoFilterCheck();
     _4kVideoFilterCheck();
     allowOnlyOneCheckbox();
+    getNextPageClick();
+    getPrevPageClick();
 }
 
 function utilitiesEventListeners() {
@@ -663,6 +856,7 @@ $(function() {
     utilitiesEventListeners();
     searchEventListeners();
     lightboxEventListeners();
+
 
 
     slickEvents();
