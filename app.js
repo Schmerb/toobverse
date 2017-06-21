@@ -957,6 +957,12 @@ function mobileNavClicks() {
         e.preventDefault();
         $(SEARCH_DROPDOWN_CONTENT).css('display', 'inline-block');
     });
+    $(window).on('click', function(e) {
+        e.preventDefault();
+        if (e.target != SEARCH_NAV) {
+            $(SEARCH_DROPDOWN_CONTENT).css('display', '');
+        }
+    });
 }
 
 //
