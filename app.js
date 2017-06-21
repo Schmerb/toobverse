@@ -4,27 +4,36 @@ var state = {
     user_query: '',
     hd_filter: false,
     _4k_filter: false,
+    _4k_browse: false,
+    live_browse: false,
+    currentLiveCategory: '',
     currentlyEnlarged: false,
     search_results: [],
     thumbnails: [],
     cached_thumbnails_pages: [],
+    currentPageNum: 1,
     mobile: false,
     isSlick: false
 };
 
 // Selectors
+
+// Header
 var TOP = '.top';
 var LANDING_CONTAINER = '#landing-container';
+var TITLE = '.title';
+var SLOGAN = '#slogan';
+var MISSION_STATEMENT = '#mission-statement';
 var EXPLORE_BTN = '#explore-btn';
 var EXPLORE = '.explore';
 var LIVE = '.live';
+var MISSION = '.mission';
 var _4K_NAV_ITEM = '.nav-4k'
 
+// Search / Results
 var FORM_CONTAINER = '#form-container';
 var SEARCH_CONTAINER = '#search-container';
 var SEARCH_NAV = '.search-nav';
-
-
 var SEARCH_DROPDOWN_CONTENT = '.search-dropdown-content';
 var SEARCH_FORM = '.search-form';
 var HD_CHECKBOX = '#hd-checkbox';
@@ -40,10 +49,12 @@ var RESULTS_CONTAINER = '.results-container';
 var RESULTS = '.results';
 var VIDEO_THUMBNAIL = '.video-thumbnail';
 var PAGE_CONTROLS_CONTAINER = '.page-controls-container';
-var NEXT_PAGE_BTN = '#next-page-btn';
-var PREV_PAGE_BTN = '#prev-page-btn';
+var NEXT_PAGE_BTN = '.next-page-btn';
+var PREV_PAGE_BTN = '.prev-page-btn';
+var PAGE_NUM = '.page-num';
+var PAGE_NUM_WRAP = '.page-num-wrap';
 
-
+// Lightbox 
 var LIGHTBOX = '.lightbox';
 var NEW_SEARCH_TIMES_LABEL = '#new-search-times-label';
 var TIMES_ICON = '#times';
@@ -57,10 +68,18 @@ var VIDEO_NAME = '#video-name';
 var CHANNEL_NAME = '#channel-name';
 var MONTH = '#month';
 var YEAR = '#year';
+var CHANNEL_OUTER_WRAP = '#channel-outer-wrap';
+
+
 //================================================================================
 // Display user search results to screen
 //================================================================================
 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Creates array of thumbanils from list of results and 
+// attaches all relevant metadata to thumbnails before 
+// displaying these to the screen
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function displayResults(resp) {
     var videos = resp.items.map(function(video, index) {
         var $video_img = `<div>
@@ -83,8 +102,8 @@ function displayResults(resp) {
     });
     state.thumbnails = videos;
     $(RESULTS).empty()
-              .append(videos.join(''))
-              .addClass('results-filter');
+              .append(videos.join(''));
+    $(RESULTS_CONTAINER).addClass('results-filter');
     if(resp.items.length > 0) {
         $(RESULTS).removeClass('hidden');
         $(PAGE_CONTROLS_CONTAINER).removeClass('hidden');
@@ -97,26 +116,33 @@ function displayResults(resp) {
 
 
 //================================================================================
-// Helper functions and API handlers
+// Helper functions 
 //================================================================================
 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Default callback function for all API requests 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function printToConsole(resp) {
     console.log(resp);
 }
 
 
 
-//
-// 
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Displays the lightbox, sets the current video and
+// loads the responsive carousel with dynamic text size
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function openLightbox(video_img, index) {
     $(LIGHTBOX).removeClass('hidden');
     updateCurrentVideo(video_img);
     loadCarousel(index);
-    dynamicQueryLabelFontSize(SEARCH_RESULTS_SPAN,'label[for="result-carousel"]');
+    dynamicQueryLabelFontSize(USER_QUERY, 'label[for="result-carousel"]');
 }
 
-
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Sets the player to new video and updates the metadata
+// associated with new video
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function updateCurrentVideo(newVideo) {
     var videoId = newVideo.attr('data-video-id');
     var title = newVideo.attr('data-title');
@@ -142,6 +168,11 @@ function updateCurrentVideo(newVideo) {
     setVideoDimensions();
 }
 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Sets the appropriate dimensions of current video based on
+// whether the video is 4K or user has chosen to  
+// enlarge / minimize the video player manually 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function setVideoDimensions(enlarge) {
     var width = '';
     var height = '';
@@ -175,9 +206,9 @@ function setVideoDimensions(enlarge) {
     });
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Closes the lightbox, stopping current video playing
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function closeLightbox() {
     $(FRAME).attr('src', ''); //$(FRAME).attr('src').slice(0, -1) + '0'
     $(LIGHTBOX).addClass('hidden');
@@ -187,9 +218,10 @@ function closeLightbox() {
     $('.slick-slide').removeClass('small-slick-slide');
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Hides the minimize video button and displays ther
+// enlarge video button
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function hideMinimizeIcon() {
     $(ENLARGE_BTN).removeClass('hidden');
     $(MINIMIZE_BTN).addClass('hidden');
@@ -197,18 +229,20 @@ function hideMinimizeIcon() {
     $('label[for="enlarge"]').removeClass('hidden');
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Hides the enlarge video button and displays ther
+// minimize video button
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function hideEnlargeIcon() {
     $(ENLARGE_BTN).addClass('hidden');
     $('label[for="enlarge"]').addClass('hidden');
     $('label[for="minimize"]').removeClass('hidden');
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Minimizes the carousel slides height in order to fit 
+// them in lightbox with large video frame.
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function minimizeCarousel() {
     $(VIDEO_THUMBNAIL).addClass('small-video-thumbnail');
     $(RESULT_CAROUSEL).addClass('small-carousel');
@@ -219,9 +253,9 @@ function minimizeCarousel() {
     $('.responsive').slick('slickGoTo', currentSlide, true);
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Sets the carousel slides back to their initial size
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function enlargeCarousel() {
     $(VIDEO_THUMBNAIL).removeClass('small-video-thumbnail');
     $(RESULT_CAROUSEL).removeClass('small-carousel');
@@ -232,39 +266,50 @@ function enlargeCarousel() {
     $('.responsive').slick('slickGoTo', currentSlide, true);
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Displays the user's search query in search bar
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function showUserQuery() {
     $(USER_QUERY_LABEL).removeClass('hidden');
     $(SEARCH_RESULTS_SPAN).removeClass("hidden");
     $(BROWSE_VIDEOS_SPAN).addClass('hidden');
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Displays browse title for 4K and live videos in 
+// search bar
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function showBrowseVideos() {
     $(USER_QUERY_LABEL).removeClass('hidden');
     $(SEARCH_RESULTS_SPAN).addClass("hidden");
     $(BROWSE_VIDEOS_SPAN).removeClass('hidden');
 }
 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Resets result page numbers for new search
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+function resetPageNumber() {
+    state.currentPageNum = 1;
+    $(PAGE_NUM).text(state.currentPageNum);
+    $(PREV_PAGE_BTN).addClass('toggled');
+}
+
 //================================================================================
 // Slick functions
 //================================================================================
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Loads the results carousel with new search result
+// item thumbnails and then (re)initiates carousel
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function loadCarousel(index) {
     $(RESULT_CAROUSEL).html(state.thumbnails.join(''));
     initLightboxCarousel(index);
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// (Re)Initializes responsive carousel 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function initLightboxCarousel(index) {
     $('.responsive').slick({
         dots: true,
@@ -310,9 +355,9 @@ function initLightboxCarousel(index) {
     // slickEvents();
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Unslicks / destroys slick carousel 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function unslickCarousel() {
     $('.responsive').slick('unslick');
     state.isSlick = false;
@@ -337,12 +382,15 @@ function checkSizeHandler() {
 
 function checkSize() {
     // ;
-    (Number($("body").css('width').slice(0, -2)) <= 700) ? state.mobile = true : state.mobile = false;
+    (Number($("body").css('width').slice(0, -2)) <= 416) ? state.mobile = true : state.mobile = false;
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Fixes the search bar to the top of the window when user
+// scrolls below its initial position in document and 
+// moves it back to its initial position when user 
+// scrolls back above its container
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function fixedSearchBar() {
     $(window).scroll(function(e) {
         var scroll = $(window).scrollTop();
@@ -368,34 +416,40 @@ function fixedSearchBar() {
     });
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Resizes target text to make sure it fits inside of 
+// its container.
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+function dynamicQueryLabelFontSize(target, container) {
+    var $target = $(target);
+    var $container = $(container);
+    var fontSizeChanged = 0;
+    $target.css('font-size', '');
+    $container.css('line-height', '');
+
+    console.log($target.css('font-size'), $container.css('line-height'));
+    while($target.height() > $container.height()) {
+        $target.css('font-size', (parseInt($target.css('font-size').slice(0,-2) - 1)) + 'px');
+        console.log('inSIDE');
+        console.log($target.css('font-size'), $container.css('line-height'));
+        fontSizeChanged++;
+    }  
+    if (fontSizeChanged) {
+        $container.css('line-height', $target.css('font-size'));
+    }
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Gives a smooth animation to page navigation bringing the 
+// target element to the top of the window
+// If truthy value is passed, extra offset height added
+// accounts for fixed search bar height;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function smoothScroll(target, fixed) {
     var fixed_offset = fixed ? 30 : 0;
     $('body, html').animate({
         scrollTop: $(target).offset().top + fixed_offset
     }, 800);
-}
-
-//
-//
-//
-function responsiveIframes() {
-    var $iframes = $('iframe');
-    $iframes.each(function() {
-        $(this).data('ratio', this.height / this.width)
-               .removeAttr('width')
-               .removeAttr('height');
-    });
-
-    $(window).resize(function() {
-        $iframes.each(function() {
-            var width = $(this).parent().width();
-            $(this).width(width)
-                   .height(width * $(this).data('ratio'));
-        });
-    }).resize();
 }
 
 
@@ -404,9 +458,10 @@ function responsiveIframes() {
 // API handlers
 //================================================================================
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Handler to make YouTube API search method calls and
+// makes calls to store and display search results
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function searchYoutubeHandler() { 
    if(state._4k_filter) {
         _4kVideoHandler(state.user_query);
@@ -423,37 +478,62 @@ function searchYoutubeHandler() {
                 $(RESULTS_TYPE).empty();
             }
             showUserQuery();
+            resetPageNumber();
             displayResults(resp);
             dynamicQueryLabelFontSize(SEARCH_RESULTS_SPAN, USER_QUERY_LABEL);
         }, 50);
     }
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Handles API calls for prev / next page tokens
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function searchByPageTokenHandler(pageToken) {
-    searchYouTubePageToken(state.user_query, 'any', 'any', 'relevance', pageToken, function(resp) {
+    var query = state.user_query;
+    var quality = 'any';
+    
+    if (state.live_browse) {
+        searchLiveVideosToken('live', pageToken, state.currentLiveCategory, function(resp) {
             state.search_results = resp;
-            smoothScroll('main');
+            // debugger;
+            console.log(resp);
             displayResults(resp);
         }, 50);
+    } else {
+        if (state.hd_filter) {
+            quality = 'high';
+        } else if (state._4k_filter) {
+            query = `${state.user_query} 4K`;
+            quality = 'high';
+        } else if (state._4k_browse) {
+            query = '4K';
+            quality = 'high';
+        }
+        searchYouTubePageToken(query, quality, 'any', 'relevance', pageToken, function(resp) {
+                state.search_results = resp;
+                // smoothScroll('main');
+                displayResults(resp);
+        }, 50);
+    }
 }
 
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Handles all API calls for live broadcast content
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function liveVideoHandler(category_id) {
     searchLiveVideos('live', category_id, function(resp) {
         state.search_results = resp;
+        resetPageNumber();
+        console.log(resp);
         displayResults(resp);
     }, 50);
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Handles any API calls for 4K quality footage. If no
+// query is given, defaults to popular general 4K videos
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function _4kVideoHandler(query) {
     var q = arguments.length > 0 ? `${query} 4K` : '4K';
     searchYouTube(q, 'high', 'any',  'relevance', function(resp) {
@@ -464,6 +544,7 @@ function _4kVideoHandler(query) {
             $(USER_QUERY).text(query);
             showUserQuery();
         }
+        resetPageNumber();
         displayResults(resp);
         dynamicQueryLabelFontSize(SEARCH_RESULTS_SPAN, USER_QUERY_LABEL);
     }, 50);
@@ -476,9 +557,9 @@ function _4kVideoHandler(query) {
 
 var YOUTUBE_BASE_URL = 'https://www.googleapis.com/youtube/v3/';
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Searches YouTube data API by search term given by user
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function searchYouTube(searchTerm, quality, type, order, callback, maxResults) {
     if(arguments.length == 1) {
         callback = printToConsole;
@@ -500,9 +581,10 @@ function searchYouTube(searchTerm, quality, type, order, callback, maxResults) {
     $.getJSON(SEARCH_URL, query, callback);
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Searches YouTube data API by page token to fetch
+// previous and next pages in search results data
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function searchYouTubePageToken(searchTerm, quality, type, order, 
                                 pageToken, callback, maxResults) {
     if(arguments.length == 1) {
@@ -526,14 +608,15 @@ function searchYouTubePageToken(searchTerm, quality, type, order,
     $.getJSON(SEARCH_URL, query, callback);
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Searches YouTube data API for live broadcast videos
+// based on video category ID's
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function searchLiveVideos(status, category_id, callback, maxResults) {
-    if(arguments.length == 1) {
+    if(arguments.length == 2) {
         callback = printToConsole;
         maxResults = 25;
-    } else if (arguments.length == 2) {
+    } else if (arguments.length == 3) {
         maxResults = 25;
     }
     var SEARCH_URL = YOUTUBE_BASE_URL + 'search/';
@@ -552,9 +635,32 @@ function searchLiveVideos(status, category_id, callback, maxResults) {
     $.getJSON(SEARCH_URL, query, callback);
 }
 
-//
-//
-//
+function searchLiveVideosToken(status, pageToken, category_id, callback, maxResults) {
+    if(arguments.length == 3) {
+        callback = printToConsole;
+        maxResults = 25;
+    } else if (arguments.length == 4) {
+        maxResults = 25;
+    }
+    var SEARCH_URL = YOUTUBE_BASE_URL + 'search/';
+    var query = {
+        key: 'AIzaSyCtbQ7eOypMc7OKBSGFs46aIL6Ozmmeygw',
+        part: 'snippet',
+        type: 'video',
+        eventType: status, // completed,live,upcoming
+        pageToken: pageToken,
+        maxResults: maxResults
+    };
+    // ;
+    if (category_id != 'all') {
+        query.videoCategoryId = category_id;
+    }
+    $.getJSON(SEARCH_URL, query, callback);
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Searches YouTube data API for most popular videos
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function searchPopularVideos() {
     var SEARCH_URL = YOUTUBE_BASE_URL + 'videos/';
     var query = {
@@ -565,9 +671,9 @@ function searchPopularVideos() {
     $.getJSON(SEARCH_URL, query, printToConsole);
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Searches YouTube data API by video ID number
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function searchVideoById(video_ID, callback) {
     if(arguments.length == 1) {
         callback = printToConsole;
@@ -581,9 +687,9 @@ function searchVideoById(video_ID, callback) {
     $.getJSON(VIDEOS_URL, query, callback);
 }
 
-//
-//
-//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Makes calls to Internet Video Archive API 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function internetVideoArchive() {
     // var ivaUrl = 'https://ee.iva-api.com/Movies/1';
     var ivaUrl = 'https://ee.iva-api.com/Videos/GetVideo/1';
@@ -638,26 +744,13 @@ function searchFormSubmit() {
         smoothScroll('main', true);
         state.user_query = $(QUERY).val();
         $(QUERY).val('');
+        state._4k_browse = false;
+        state.live_browse = false;
         searchYoutubeHandler();
-        
     });
 }
 
-//
-//
-//
-function dynamicQueryLabelFontSize(target, container) {
-    var $target = $(target);
-    $target.css('font-size', '24px');
-    ;
-    while($target.height() > $(container).height()) {
-        console.log('target height', $target.height());
-        console.log('container height', $(container).height());
-        $target.css('font-size', (parseInt($target.css('font-size').slice(0,-2) - 1)) + 'px');
-    }  
-    console.log('FINAL target height', $target.height());
-    console.log('FINAL container height', $(container).height()); 
-}
+
 
 
 //
@@ -665,8 +758,22 @@ function dynamicQueryLabelFontSize(target, container) {
 function getNextPageClick() {
     $(NEXT_PAGE_BTN).on('click', function(e) {
         e.preventDefault();
-        searchByPageTokenHandler(state.search_results.nextPageToken);
-        $(PREV_PAGE_BTN).removeClass('toggled');
+        if (state.search_results.hasOwnProperty('nextPageToken')) {
+            searchByPageTokenHandler(state.search_results.nextPageToken);
+            $(PREV_PAGE_BTN).removeClass('toggled');
+            $(PAGE_NUM_WRAP).removeClass('hidden');
+            $(PAGE_NUM).text(++state.currentPageNum);
+            // debugger;
+            // smoothScroll('main', true);
+            if($(this).hasClass('bottom')) {
+                console.log('bottom');
+                smoothScroll('main', true);
+            } else {
+                console.log('top');
+            }
+        } else {
+            $(NEXT_PAGE_BTN).addClass('toggled');
+        }
     });
 }
 
@@ -677,6 +784,11 @@ function getPrevPageClick() {
         e.preventDefault();
         if (state.search_results.hasOwnProperty('prevPageToken')) {
             searchByPageTokenHandler(state.search_results.prevPageToken);
+            $(PAGE_NUM).text(--state.currentPageNum);
+            state.currentPageNum == 1 ? $(PREV_PAGE_BTN).addClass('toggled') : null;
+            if($(this).hasClass('bottom')) {
+                smoothScroll('main', true);
+            } 
         } else {
             $(PREV_PAGE_BTN).addClass('toggled');
         }
@@ -739,6 +851,8 @@ function enlargeVideoClick() {
         hideEnlargeIcon();
         setVideoDimensions(state.currentlyEnlarged);
         minimizeCarousel();
+        $('label.slide-label').css('font-size', '10px');
+        $(CHANNEL_OUTER_WRAP).css('margin-top', '5px');
     });
 }
 
@@ -751,6 +865,8 @@ function minimizeVideoClick() {
         hideMinimizeIcon();
         setVideoDimensions();
         enlargeCarousel();
+        $('label.slide-label').css('font-size', '');
+        $(CHANNEL_OUTER_WRAP).css('margin-top', '');
     });
 }
 
@@ -778,16 +894,43 @@ function closeLightboxClick() {
 
 //
 //
+//
+function titleClick() {
+    $(TITLE).on('click', function(e) {
+        e.preventDefault();
+        location.reload();
+    });
+}
+
+//
+//
+//
+function missionStatementClick() {
+    $(MISSION).on('click', function(e) {
+        e.preventDefault();
+        smoothScroll('.banner');
+        $(SLOGAN).addClass('hidden');
+        $(MISSION_STATEMENT).removeClass('hidden');
+    });
+}
+
+
+//
+//
 function liveVideoClick() {
     live_channels.forEach(function(channel) {
         $(channel.selector).on('click', function(e) {
             e.preventDefault();
-            smoothScroll('main', true);
+            state.mobile ? smoothScroll('main') : smoothScroll('main', true);
             showBrowseVideos();
+            $(USER_QUERY_LABEL).css('line-height', '');
             $(BROWSE_VIDEOS_SPAN).text(channel.text);
-            liveVideoHandler(channel.category);
             $(USER_QUERY).empty();
             $(USER_QUERY_WRAP).addClass("hidden");
+            state.live_browse = true;
+            state._4k_browse = false;
+            state.currentLiveCategory = channel.category;
+            liveVideoHandler(channel.category);
         });
     });
 }
@@ -797,13 +940,15 @@ function liveVideoClick() {
 function _4kVideoClick() {
     $(_4K_NAV_ITEM).on('click', function(e) {
         e.preventDefault();
-        smoothScroll('main', true);
+        state.mobile ? smoothScroll('main') : smoothScroll('main', true);
         showBrowseVideos();
+        $(USER_QUERY_LABEL).css('line-height', '');
         $(BROWSE_VIDEOS_SPAN).text('Browse 4K Videos');
-        // ;
-        _4kVideoHandler();
         $(USER_QUERY).empty();
         $(USER_QUERY_WRAP).addClass("hidden");
+        state._4k_browse = true;
+        state.live_browse = false;
+        _4kVideoHandler();
     });
 }
 
@@ -821,12 +966,17 @@ function slickEvents() {
 // Event groups
 //===============================================================================
 
+function navEventListeners() {
+    titleClick();
+    _4kVideoClick();
+    liveVideoClick();
+    missionStatementClick();
+}
+
 function searchEventListeners() {
     searchFormSubmit();
     fixedSearchBar();
     dynamicQueryLabelFontSize();
-    liveVideoClick();
-    _4kVideoClick();
     hdVideoFilterCheck();
     _4kVideoFilterCheck();
     allowOnlyOneCheckbox();
@@ -853,14 +1003,10 @@ function lightboxEventListeners() {
 // Entry Point
 //================================================================================
 $(function() {
+    navEventListeners();
     utilitiesEventListeners();
     searchEventListeners();
     lightboxEventListeners();
 
-
-
-    slickEvents();
-    // initLightboxCarousel();
-    searchVideoById('EkBalQOxLgg');
-    // internetVideoArchive();
+    searchLiveVideosToken('live', "CGQQAA", 10, printToConsole, 50);
 });
