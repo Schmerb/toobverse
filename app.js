@@ -952,6 +952,13 @@ function _4kVideoClick() {
     });
 }
 
+function mobileNavClicks() {
+    $(SEARCH_NAV).on('click', function(e) {
+        e.preventDefault();
+        $(SEARCH_DROPDOWN_CONTENT).css('display', 'inline-block');
+    });
+}
+
 //
 //
 function slickEvents() {
@@ -967,6 +974,7 @@ function slickEvents() {
 //===============================================================================
 
 function navEventListeners() {
+    mobileNavClicks();
     titleClick();
     _4kVideoClick();
     liveVideoClick();
