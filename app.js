@@ -851,8 +851,7 @@ function playVideoLightboxClick() {
     });
 
 
-    $(RESULTS).on('tap', VIDEO_THUMBNAIL, function(e) {
-        alert('tapped!');
+    $(RESULTS).on('click', VIDEO_THUMBNAIL, function(e) {
         e.preventDefault();
         hideMinimizeIcon();
         openLightbox($(this), $(this).attr('data-index'));
