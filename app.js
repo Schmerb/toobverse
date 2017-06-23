@@ -29,6 +29,8 @@ var EXPLORE = '.explore';
 var LIVE = '.live';
 var MISSION = '.mission';
 var _4K_NAV_ITEM = '.nav-4k'
+var HEADER_NAV = '.header-nav';
+var DROPDOWN_CONTENT = '.dropdown-content';
 
 // Search / Results
 var FORM_CONTAINER = '#form-container';
@@ -741,6 +743,7 @@ function scrollToTop() {
 function searchFormSubmit() {
     $(SEARCH_FORM).on('submit', function(e) {
         e.preventDefault();
+        alert('clicked');
         smoothScroll('main', true);
         state.user_query = $(QUERY).val();
         $(QUERY).val('');
@@ -835,10 +838,25 @@ function allowOnlyOneCheckbox() {
 //
 //
 function playVideoLightboxClick() {
-    $(RESULTS).on('click', VIDEO_THUMBNAIL, function(e) {
+    // $(RESULTS).on('click', VIDEO_THUMBNAIL, function(e) {
+    //     e.preventDefault();
+    //     hideMinimizeIcon();
+    //     openLightbox($(this), $(this).attr('data-index'));
+    //     return false;
+    // });
+
+    $('.filter').on('tap', function(e) {
+        e.preventDefault();
+        alert('tapped!');
+    });
+
+
+    $(RESULTS).on('tap', VIDEO_THUMBNAIL, function(e) {
+        alert('tapped!');
         e.preventDefault();
         hideMinimizeIcon();
         openLightbox($(this), $(this).attr('data-index'));
+        return false;
     });
 }
 
@@ -957,9 +975,16 @@ function mobileNavClicks() {
         e.preventDefault();
         $(SEARCH_DROPDOWN_CONTENT).css('display', 'inline-block');
     });
+
+    $(HEADER_NAV).on('click', function(e) {
+        e.preventDefault();
+        $(DROPDOWN_CONTENT).css('display', 'inline-block');
+    });
+
     $(window).on('click', function(e) {
         e.preventDefault();
-        if (e.target != SEARCH_NAV) {
+        alert('clicked');
+        if (e.target != SEARCH_DROPDOWN_CONTENT) {
             $(SEARCH_DROPDOWN_CONTENT).css('display', '');
         }
     });
@@ -980,7 +1005,7 @@ function slickEvents() {
 //===============================================================================
 
 function navEventListeners() {
-    mobileNavClicks();
+    // mobileNavClicks();
     titleClick();
     _4kVideoClick();
     liveVideoClick();
