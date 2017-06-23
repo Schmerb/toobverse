@@ -1243,7 +1243,7 @@ footer {
     }
 
     .slick-slide {
-        background: black;
+        background: rgba(0,0,0,0.1);
         display: inline-block;
         overflow: hidden;
         width: 275px;
