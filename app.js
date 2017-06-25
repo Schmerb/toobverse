@@ -928,7 +928,7 @@ function missionStatementClick() {
         smoothScroll('.banner');
         $(SLOGAN).addClass('hidden');
         $(MISSION_STATEMENT).removeClass('hidden');
-        $(DROPDOWN_CONTENT).css('display', 'none');
+        $(DROPDOWN_CONTENT).removeClass('show-nav');
     });
 }
 
@@ -949,8 +949,8 @@ function liveVideoClick() {
             state._4k_browse = false;
             state.currentLiveCategory = channel.category;
             liveVideoHandler(channel.category);
-            $(DROPDOWN_CONTENT).css('display', 'none');
-            $(SEARCH_DROPDOWN_CONTENT).css('display', 'none');
+            $(DROPDOWN_CONTENT).removeClass('show-nav');
+            $(SEARCH_DROPDOWN_CONTENT).removeClass('show-nav');
         });
     });
 }
@@ -969,8 +969,8 @@ function _4kVideoClick() {
         state._4k_browse = true;
         state.live_browse = false;
         _4kVideoHandler();
-        $(DROPDOWN_CONTENT).css('display', 'none');
-        $(SEARCH_DROPDOWN_CONTENT).css('display', 'none');
+        $(DROPDOWN_CONTENT).removeClass('show-nav');
+        $(SEARCH_DROPDOWN_CONTENT).removeClass('show-nav');
     });
 }
 
