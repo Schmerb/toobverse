@@ -724,6 +724,7 @@ function internetVideoArchive() {
 function scrollToSearchBar() {
     $(EXPLORE).on('click touchstart', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         smoothScroll('main');
         $(QUERY).focus();
     });
@@ -734,6 +735,7 @@ function scrollToSearchBar() {
 function scrollToTop() {
     $(TOP).on('click touchstart', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         smoothScroll('.banner');
     });
 }
@@ -743,6 +745,7 @@ function scrollToTop() {
 function searchFormSubmit() {
     $(SEARCH_FORM).on('submit', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         smoothScroll('main', true);
         state.user_query = $(QUERY).val();
         $(QUERY).val('');
@@ -760,6 +763,7 @@ function searchFormSubmit() {
 function getNextPageClick() {
     $(NEXT_PAGE_BTN).on('click touchstart', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         if (state.search_results.hasOwnProperty('nextPageToken')) {
             searchByPageTokenHandler(state.search_results.nextPageToken);
             $(PREV_PAGE_BTN).removeClass('toggled');
@@ -784,6 +788,7 @@ function getNextPageClick() {
 function getPrevPageClick() {
     $(PREV_PAGE_BTN).on('click touchstart', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         if (state.search_results.hasOwnProperty('prevPageToken')) {
             searchByPageTokenHandler(state.search_results.prevPageToken);
             $(PAGE_NUM).text(--state.currentPageNum);
@@ -804,6 +809,7 @@ function hdVideoFilterCheck() {
         // alert('hd checked!');
         // ;
         e.preventDefault();
+        e.stopPropagation();
         state.hd_filter = this.checked ? true : false;
     });
 }
@@ -813,6 +819,7 @@ function hdVideoFilterCheck() {
 function _4kVideoFilterCheck() {
     $(_4K_CHECKBOX).on('change', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         state._4k_filter = this.checked ? true : false;
     });
 }
@@ -822,6 +829,7 @@ function _4kVideoFilterCheck() {
 function allowOnlyOneCheckbox() {
     $('input[type="checkbox"').on('change', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         if (this.checked) {
             $('input[type="checkbox"').not(this).prop('checked', false);
             var state_filter = $('input[type="checkbox"').not(this).attr('data-state-id');
@@ -852,6 +860,7 @@ function playVideoLightboxClick() {
 
     $(RESULTS).on('click touchstart', VIDEO_THUMBNAIL, function(e) {
         e.preventDefault();
+        e.stopPropagation();
         alert('touched!');
         hideMinimizeIcon();
         openLightbox($(this), $(this).attr('data-index'));
@@ -864,6 +873,7 @@ function playVideoLightboxClick() {
 function enlargeVideoClick() {
     $(ENLARGE_BTN).on('click touchstart', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         state.currentlyEnlarged = true;
         hideEnlargeIcon();
         setVideoDimensions(state.currentlyEnlarged);
@@ -878,6 +888,7 @@ function enlargeVideoClick() {
 function minimizeVideoClick() {
     $(MINIMIZE_BTN).on('click touchstart', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         state.currentlyEnlarged = false;
         hideMinimizeIcon();
         setVideoDimensions();
@@ -892,6 +903,7 @@ function minimizeVideoClick() {
 function lightboxCarouselVideoClick() {
     $(LIGHTBOX).on('click touchstart', '.slick-slide', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         updateCurrentVideo($(this).children(VIDEO_THUMBNAIL));
     });
 }
@@ -901,6 +913,7 @@ function lightboxCarouselVideoClick() {
 function closeLightboxClick() {
     $(document).on('click touchstart', MODAL_FILTER + ', ' + TIMES_ICON, function(e) {
         e.preventDefault();
+        e.stopPropagation();
         if (e.target == $(MODAL_FILTER)[0] || e.target == $(TIMES_ICON)[0]) {
             unslickCarousel();
             closeLightbox();
@@ -915,6 +928,7 @@ function closeLightboxClick() {
 function titleClick() {
     $(TITLE).on('click touchstart', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         location.reload();
     });
 }
@@ -925,6 +939,7 @@ function titleClick() {
 function missionStatementClick() {
     $(MISSION).on('click touchstart', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         smoothScroll('.banner');
         $(SLOGAN).addClass('hidden');
         $(MISSION_STATEMENT).removeClass('hidden');
@@ -939,6 +954,7 @@ function liveVideoClick() {
     live_channels.forEach(function(channel) {
         $(channel.selector).on('click touchstart', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             state.mobile ? smoothScroll('main') : smoothScroll('main', true);
             showBrowseVideos();
             $(USER_QUERY_LABEL).css('line-height', '');
@@ -960,6 +976,7 @@ function liveVideoClick() {
 function _4kVideoClick() {
     $(_4K_NAV_ITEM).on('click touchstart', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         state.mobile ? smoothScroll('main') : smoothScroll('main', true);
         showBrowseVideos();
         $(USER_QUERY_LABEL).css('line-height', '');
