@@ -969,23 +969,15 @@ function _4kVideoClick() {
 }
 
 function mobileNavClicks() {
-    // $(HEADER_NAV).on('touchstart', function(e) {
-    //     e.preventDefault();
-    //     $(DROPDOWN_CONTENT).css('display', 'inline-block');
-    // });
-
-    // $(SEARCH_NAV).on('touchstart', function(e) {
-    //     e.preventDefault();
-    //     $(SEARCH_DROPDOWN_CONTENT).css('display', 'inline-block');
-    // });
-
-    $(HEADER_NAV).on('click', function(e) {
+   $(HEADER_NAV).on('click touchstart', function(e) {
         e.preventDefault();
+        alert('tapped!');
         $(DROPDOWN_CONTENT).css('display', 'inline-block');
     });
 
-    $(SEARCH_NAV).on('click', function(e) {
+    $(SEARCH_NAV).on('click touchstart', function(e) {
         e.preventDefault();
+        alert('tapped!');
         $(SEARCH_DROPDOWN_CONTENT).css('display', 'inline-block');
     });
 
