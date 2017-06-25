@@ -94,6 +94,10 @@ header {
     padding: 3px;
 }
 
+.show-nav{
+    display: inline-block;
+}
+
 
 
 #landing-container {
