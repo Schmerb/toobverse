@@ -722,7 +722,7 @@ function internetVideoArchive() {
 //
 //
 function scrollToSearchBar() {
-    $(EXPLORE).on('click touchstart', function(e) {
+    $(EXPLORE).on('touchstart click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         smoothScroll('main');
@@ -733,7 +733,7 @@ function scrollToSearchBar() {
 //
 //
 function scrollToTop() {
-    $(TOP).on('click touchstart', function(e) {
+    $(TOP).on('touchstart click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         smoothScroll('.banner');
@@ -761,7 +761,7 @@ function searchFormSubmit() {
 //
 //
 function getNextPageClick() {
-    $(NEXT_PAGE_BTN).on('click touchstart', function(e) {
+    $(NEXT_PAGE_BTN).on('touchstart click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         if (state.search_results.hasOwnProperty('nextPageToken')) {
@@ -786,7 +786,7 @@ function getNextPageClick() {
 //
 //
 function getPrevPageClick() {
-    $(PREV_PAGE_BTN).on('click touchstart', function(e) {
+    $(PREV_PAGE_BTN).on('touchstart click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         if (state.search_results.hasOwnProperty('prevPageToken')) {
@@ -858,7 +858,7 @@ function playVideoLightboxClick() {
     });
 
 
-    $(RESULTS).on('click touchstart', VIDEO_THUMBNAIL, function(e) {
+    $(RESULTS).on('touchstart click', VIDEO_THUMBNAIL, function(e) {
         e.preventDefault();
         e.stopPropagation();
         alert('touched!');
@@ -871,7 +871,7 @@ function playVideoLightboxClick() {
 //
 //
 function enlargeVideoClick() {
-    $(ENLARGE_BTN).on('click touchstart', function(e) {
+    $(ENLARGE_BTN).on('touchstart click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         state.currentlyEnlarged = true;
@@ -886,7 +886,7 @@ function enlargeVideoClick() {
 //
 //
 function minimizeVideoClick() {
-    $(MINIMIZE_BTN).on('click touchstart', function(e) {
+    $(MINIMIZE_BTN).on('touchstart click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         state.currentlyEnlarged = false;
@@ -901,7 +901,7 @@ function minimizeVideoClick() {
 //
 //
 function lightboxCarouselVideoClick() {
-    $(LIGHTBOX).on('click touchstart', '.slick-slide', function(e) {
+    $(LIGHTBOX).on('touchstart click', '.slick-slide', function(e) {
         e.preventDefault();
         e.stopPropagation();
         updateCurrentVideo($(this).children(VIDEO_THUMBNAIL));
@@ -911,7 +911,7 @@ function lightboxCarouselVideoClick() {
 //
 //
 function closeLightboxClick() {
-    $(document).on('click touchstart', MODAL_FILTER + ', ' + TIMES_ICON, function(e) {
+    $(document).on('touchstart click', MODAL_FILTER + ', ' + TIMES_ICON, function(e) {
         e.preventDefault();
         e.stopPropagation();
         if (e.target == $(MODAL_FILTER)[0] || e.target == $(TIMES_ICON)[0]) {
@@ -926,7 +926,7 @@ function closeLightboxClick() {
 //
 //
 function titleClick() {
-    $(TITLE).on('click touchstart', function(e) {
+    $(TITLE).on('touchstart click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         location.reload();
@@ -937,7 +937,7 @@ function titleClick() {
 //
 //
 function missionStatementClick() {
-    $(MISSION).on('click touchstart', function(e) {
+    $(MISSION).on('touchstart click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         smoothScroll('.banner');
@@ -952,7 +952,7 @@ function missionStatementClick() {
 //
 function liveVideoClick() {
     live_channels.forEach(function(channel) {
-        $(channel.selector).on('click touchstart', function(e) {
+        $(channel.selector).on('touchstart click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             state.mobile ? smoothScroll('main') : smoothScroll('main', true);
@@ -974,7 +974,7 @@ function liveVideoClick() {
 //
 //
 function _4kVideoClick() {
-    $(_4K_NAV_ITEM).on('click touchstart', function(e) {
+    $(_4K_NAV_ITEM).on('touchstart click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         state.mobile ? smoothScroll('main') : smoothScroll('main', true);
@@ -1084,6 +1084,11 @@ $(function() {
     utilitiesEventListeners();
     searchEventListeners();
     lightboxEventListeners();
+
+    $(window).on('touchstart', function(e) {
+        alert(e.target);
+    });
+
 
     searchLiveVideosToken('live', "CGQQAA", 10, printToConsole, 50);
 });
