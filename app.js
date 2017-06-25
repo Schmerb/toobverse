@@ -722,7 +722,7 @@ function internetVideoArchive() {
 //
 //
 function scrollToSearchBar() {
-    $(EXPLORE).on('click', function(e) {
+    $(EXPLORE).on('click touchstart', function(e) {
         e.preventDefault();
         smoothScroll('main');
         $(QUERY).focus();
@@ -732,7 +732,7 @@ function scrollToSearchBar() {
 //
 //
 function scrollToTop() {
-    $(TOP).on('click', function(e) {
+    $(TOP).on('click touchstart', function(e) {
         e.preventDefault();
         smoothScroll('.banner');
     });
@@ -758,7 +758,7 @@ function searchFormSubmit() {
 //
 //
 function getNextPageClick() {
-    $(NEXT_PAGE_BTN).on('click', function(e) {
+    $(NEXT_PAGE_BTN).on('click touchstart', function(e) {
         e.preventDefault();
         if (state.search_results.hasOwnProperty('nextPageToken')) {
             searchByPageTokenHandler(state.search_results.nextPageToken);
@@ -782,7 +782,7 @@ function getNextPageClick() {
 //
 //
 function getPrevPageClick() {
-    $(PREV_PAGE_BTN).on('click', function(e) {
+    $(PREV_PAGE_BTN).on('click touchstart', function(e) {
         e.preventDefault();
         if (state.search_results.hasOwnProperty('prevPageToken')) {
             searchByPageTokenHandler(state.search_results.prevPageToken);
@@ -850,7 +850,7 @@ function playVideoLightboxClick() {
     });
 
 
-    $(RESULTS).on('click', VIDEO_THUMBNAIL, function(e) {
+    $(RESULTS).on('click touchstart', VIDEO_THUMBNAIL, function(e) {
         e.preventDefault();
         hideMinimizeIcon();
         openLightbox($(this), $(this).attr('data-index'));
@@ -861,7 +861,7 @@ function playVideoLightboxClick() {
 //
 //
 function enlargeVideoClick() {
-    $(ENLARGE_BTN).on('click', function(e) {
+    $(ENLARGE_BTN).on('click touchstart', function(e) {
         e.preventDefault();
         state.currentlyEnlarged = true;
         hideEnlargeIcon();
@@ -875,7 +875,7 @@ function enlargeVideoClick() {
 //
 //
 function minimizeVideoClick() {
-    $(MINIMIZE_BTN).on('click', function(e) {
+    $(MINIMIZE_BTN).on('click touchstart', function(e) {
         e.preventDefault();
         state.currentlyEnlarged = false;
         hideMinimizeIcon();
@@ -889,7 +889,7 @@ function minimizeVideoClick() {
 //
 //
 function lightboxCarouselVideoClick() {
-    $(LIGHTBOX).on('click', '.slick-slide', function(e) {
+    $(LIGHTBOX).on('click touchstart', '.slick-slide', function(e) {
         e.preventDefault();
         updateCurrentVideo($(this).children(VIDEO_THUMBNAIL));
     });
@@ -898,7 +898,7 @@ function lightboxCarouselVideoClick() {
 //
 //
 function closeLightboxClick() {
-    $(document).on('click', MODAL_FILTER + ', ' + TIMES_ICON, function(e) {
+    $(document).on('click touchstart', MODAL_FILTER + ', ' + TIMES_ICON, function(e) {
         e.preventDefault();
         if (e.target == $(MODAL_FILTER)[0] || e.target == $(TIMES_ICON)[0]) {
             unslickCarousel();
@@ -912,7 +912,7 @@ function closeLightboxClick() {
 //
 //
 function titleClick() {
-    $(TITLE).on('click', function(e) {
+    $(TITLE).on('click touchstart', function(e) {
         e.preventDefault();
         location.reload();
     });
@@ -922,7 +922,7 @@ function titleClick() {
 //
 //
 function missionStatementClick() {
-    $(MISSION).on('click', function(e) {
+    $(MISSION).on('click touchstart', function(e) {
         e.preventDefault();
         smoothScroll('.banner');
         $(SLOGAN).addClass('hidden');
@@ -954,7 +954,7 @@ function liveVideoClick() {
 //
 //
 function _4kVideoClick() {
-    $(_4K_NAV_ITEM).on('click', function(e) {
+    $(_4K_NAV_ITEM).on('click touchstart', function(e) {
         e.preventDefault();
         state.mobile ? smoothScroll('main') : smoothScroll('main', true);
         showBrowseVideos();
