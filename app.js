@@ -974,6 +974,7 @@ function mobileNavClicks() {
         e.stopPropagation();
         alert('tapped!');
         $(DROPDOWN_CONTENT).css('display', 'inline-block');
+        return false;
     });
 
     $(SEARCH_NAV).on('touchstart click', function(e) {
@@ -981,6 +982,7 @@ function mobileNavClicks() {
         e.stopPropagation();
         alert('tapped!');
         $(SEARCH_DROPDOWN_CONTENT).css('display', 'inline-block');
+        return false;
     });
 
     $(window).on('touchstart', function(e) {
@@ -989,6 +991,7 @@ function mobileNavClicks() {
         if (e.target != SEARCH_DROPDOWN_CONTENT) {
             $(SEARCH_DROPDOWN_CONTENT).css('display', '');
         }
+        return false;
     });
 }
 
