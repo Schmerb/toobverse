@@ -969,7 +969,7 @@ function _4kVideoClick() {
 }
 
 function mobileNavClicks() {
-   $(HEADER_NAV).on('touchstart click', function(e) {
+   $(HEADER_NAV).on('mousedown touchstart', function(e) {
         e.preventDefault();
         e.stopPropagation();
         alert('tapped!');
@@ -977,7 +977,7 @@ function mobileNavClicks() {
         return false;
     });
 
-    $(SEARCH_NAV).on('touchstart click', function(e) {
+    $(SEARCH_NAV).on('mousedown touchstart', function(e) {
         e.preventDefault();
         e.stopPropagation();
         alert('tapped!');
