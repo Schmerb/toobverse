@@ -969,26 +969,23 @@ function _4kVideoClick() {
 }
 
 function mobileNavClicks() {
-   $(HEADER_NAV).on('click touchstart', function(e) {
+   $(HEADER_NAV).on('touchstart click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         alert('tapped!');
         $(DROPDOWN_CONTENT).css('display', 'inline-block');
     });
 
-    $(SEARCH_NAV).on('click touchstart', function(e) {
+    $(SEARCH_NAV).on('touchstart click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         alert('tapped!');
         $(SEARCH_DROPDOWN_CONTENT).css('display', 'inline-block');
     });
 
-    $(HEADER_NAV).on('touchstart', function(e) {
-        e.preventDefault();
-        $(DROPDOWN_CONTENT).css('display', 'inline-block');
-    });
-
     $(window).on('touchstart', function(e) {
         e.preventDefault();
-        
+        e.stopPropagation();
         if (e.target != SEARCH_DROPDOWN_CONTENT) {
             $(SEARCH_DROPDOWN_CONTENT).css('display', '');
         }
