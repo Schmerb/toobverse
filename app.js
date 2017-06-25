@@ -928,6 +928,7 @@ function missionStatementClick() {
         smoothScroll('.banner');
         $(SLOGAN).addClass('hidden');
         $(MISSION_STATEMENT).removeClass('hidden');
+        $(DROPDOWN_CONTENT).css('display', '');
     });
 }
 
@@ -948,6 +949,8 @@ function liveVideoClick() {
             state._4k_browse = false;
             state.currentLiveCategory = channel.category;
             liveVideoHandler(channel.category);
+            $(DROPDOWN_CONTENT).css('display', '');
+            $(SEARCH_DROPDOWN_CONTENT).css('display', '');
         });
     });
 }
@@ -966,6 +969,8 @@ function _4kVideoClick() {
         state._4k_browse = true;
         state.live_browse = false;
         _4kVideoHandler();
+        $(DROPDOWN_CONTENT).css('display', '');
+        $(SEARCH_DROPDOWN_CONTENT).css('display', '');
     });
 }
 
