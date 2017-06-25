@@ -743,7 +743,6 @@ function scrollToTop() {
 function searchFormSubmit() {
     $(SEARCH_FORM).on('submit', function(e) {
         e.preventDefault();
-        alert('clicked');
         smoothScroll('main', true);
         state.user_query = $(QUERY).val();
         $(QUERY).val('');
@@ -970,19 +969,19 @@ function _4kVideoClick() {
 }
 
 function mobileNavClicks() {
-    $(SEARCH_NAV).on('click', function(e) {
+    $(SEARCH_NAV).on('touchstart', function(e) {
         e.preventDefault();
         $(SEARCH_DROPDOWN_CONTENT).css('display', 'inline-block');
     });
 
-    $(HEADER_NAV).on('click', function(e) {
+    $(HEADER_NAV).on('touchstart', function(e) {
         e.preventDefault();
         $(DROPDOWN_CONTENT).css('display', 'inline-block');
     });
 
-    $(window).on('click', function(e) {
+    $(window).on('touchstart', function(e) {
         e.preventDefault();
-        alert('clicked');
+        
         if (e.target != SEARCH_DROPDOWN_CONTENT) {
             $(SEARCH_DROPDOWN_CONTENT).css('display', '');
         }
