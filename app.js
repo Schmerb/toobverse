@@ -805,7 +805,7 @@ function getPrevPageClick() {
 //
 //
 function hdVideoFilterCheck() {
-    $(HD_CHECKBOX).on('change', function(e) {
+    $(HD_CHECKBOX).on('change touchstart', function(e) {
         // alert('hd checked!');
         // ;
         e.preventDefault();
@@ -817,7 +817,7 @@ function hdVideoFilterCheck() {
 //
 //
 function _4kVideoFilterCheck() {
-    $(_4K_CHECKBOX).on('change', function(e) {
+    $(_4K_CHECKBOX).on('change touchstart', function(e) {
         e.preventDefault();
         e.stopPropagation();
         state._4k_filter = this.checked ? true : false;
@@ -827,7 +827,7 @@ function _4kVideoFilterCheck() {
 //
 //
 function allowOnlyOneCheckbox() {
-    $('input[type="checkbox"').on('change', function(e) {
+    $('input[type="checkbox"').on('change touchstart', function(e) {
         e.preventDefault();
         e.stopPropagation();
         if (this.checked) {
