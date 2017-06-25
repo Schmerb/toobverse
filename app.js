@@ -852,6 +852,7 @@ function playVideoLightboxClick() {
 
     $(RESULTS).on('click touchstart', VIDEO_THUMBNAIL, function(e) {
         e.preventDefault();
+        alert('touched!');
         hideMinimizeIcon();
         openLightbox($(this), $(this).attr('data-index'));
         return false;
