@@ -1010,7 +1010,7 @@ function slickEvents() {
 //===============================================================================
 
 function navEventListeners() {
-    // mobileNavClicks();
+    mobileNavClicks();
     titleClick();
     _4kVideoClick();
     liveVideoClick();
