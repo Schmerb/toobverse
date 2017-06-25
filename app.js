@@ -1086,6 +1086,7 @@ $(function() {
     lightboxEventListeners();
 
     $(window).on('touchstart', function(e) {
+        e.stopPropagation();
         alert(e.target);
     });
 
