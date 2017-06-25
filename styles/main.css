@@ -94,9 +94,6 @@ header {
     padding: 3px;
 }
 
-.show-nav{
-    display: inline-block;
-}
 
 
 
@@ -301,6 +298,11 @@ main {
 #query-label {
     max-width: 40%;
 }
+
+.show-nav{
+    display: inline-block;
+}
+
 
 
 /* * * * *  Results Page  * * * * */
