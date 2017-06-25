@@ -935,7 +935,7 @@ function missionStatementClick() {
 //
 function liveVideoClick() {
     live_channels.forEach(function(channel) {
-        $(channel.selector).on('click', function(e) {
+        $(channel.selector).on('click touchstart', function(e) {
             e.preventDefault();
             state.mobile ? smoothScroll('main') : smoothScroll('main', true);
             showBrowseVideos();
