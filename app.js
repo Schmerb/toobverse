@@ -847,7 +847,6 @@ function allowOnlyOneCheckbox() {
 function playVideoLightboxClick() {
     $(RESULTS).on('touchstart click', VIDEO_THUMBNAIL, function(e) {
         e.preventDefault();
-        alert('touched!');
         hideMinimizeIcon();
         openLightbox($(this), $(this).attr('data-index'));
         return false;
@@ -1060,11 +1059,6 @@ $(function() {
     utilitiesEventListeners();
     searchEventListeners();
     lightboxEventListeners();
-
-    $(window).on('touchstart click', function(e) {
-        e.stopPropagation();
-        alert('clicked', e.target);
-    });
 
 
     searchLiveVideosToken('live', "CGQQAA", 10, printToConsole, 50);
