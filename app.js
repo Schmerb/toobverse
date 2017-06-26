@@ -85,6 +85,7 @@ var CHANNEL_OUTER_WRAP = '#channel-outer-wrap';
 function displayResults(resp) {
     var videos = resp.items.map(function(video, index) {
         var $video_img = `<div>
+                            <a href=""
                             <img class="video-thumbnail" 
                                  id="${video.id.videoId}"
                                  src="${video.snippet.thumbnails.medium.url}" 
@@ -99,6 +100,7 @@ function displayResults(resp) {
                                  data-live-content="${video.snippet.liveBroadcastContent}"
                             >
                             <label class="slide-label" for="${video.id.videoId}">${video.snippet.title}</label>
+                            </a>
                           </div>`;
         return $video_img;
     });
