@@ -851,13 +851,6 @@ function playVideoLightboxClick() {
         openLightbox($(this), $(this).attr('data-index'));
         // return false;
     });
-
-    $('body').on('click', '.results div', function(e) {
-        e.preventDefault();
-        hideMinimizeIcon();
-        openLightbox($(this), $(this).attr('data-index'));
-        // return false;
-    });
 }
 
 //
