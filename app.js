@@ -847,6 +847,14 @@ function allowOnlyOneCheckbox() {
 function playVideoLightboxClick() {
     $('body').on('click', VIDEO_THUMBNAIL, function(e) {
         e.preventDefault();
+        e.stopPropagation();
+        hideMinimizeIcon();
+        openLightbox($(this), $(this).attr('data-index'));
+        // return false;
+    });
+    $('.results').on('click', VIDEO_THUMBNAIL, function(e) {
+        e.preventDefault();
+        e.stopPropagation();
         hideMinimizeIcon();
         openLightbox($(this), $(this).attr('data-index'));
         // return false;
