@@ -849,14 +849,14 @@ function playVideoLightboxClick() {
         e.preventDefault();
         hideMinimizeIcon();
         openLightbox($(this), $(this).attr('data-index'));
-        return false;
+        // return false;
     });
 
     $('body').on('click', '.results div', function(e) {
         e.preventDefault();
         hideMinimizeIcon();
         openLightbox($(this), $(this).attr('data-index'));
-        return false;
+        // return false;
     });
 }
 
