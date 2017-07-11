@@ -722,7 +722,7 @@ function internetVideoArchive() {
 //
 //
 function scrollToSearchBar() {
-    $(EXPLORE).on('touchstart click', function(e) {
+    $(EXPLORE).on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         smoothScroll('main');
@@ -733,7 +733,7 @@ function scrollToSearchBar() {
 //
 //
 function scrollToTop() {
-    $(TOP).on('touchstart click', function(e) {
+    $(TOP).on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         smoothScroll('.banner');
@@ -761,7 +761,7 @@ function searchFormSubmit() {
 //
 //
 function getNextPageClick() {
-    $(NEXT_PAGE_BTN).on('touchstart click', function(e) {
+    $(NEXT_PAGE_BTN).on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         if (state.search_results.hasOwnProperty('nextPageToken')) {
@@ -786,7 +786,7 @@ function getNextPageClick() {
 //
 //
 function getPrevPageClick() {
-    $(PREV_PAGE_BTN).on('touchstart click', function(e) {
+    $(PREV_PAGE_BTN).on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         if (state.search_results.hasOwnProperty('prevPageToken')) {
@@ -805,7 +805,7 @@ function getPrevPageClick() {
 //
 //
 function hdVideoFilterCheck() {
-    $(HD_CHECKBOX).on('change touchstart', function(e) {
+    $(HD_CHECKBOX).on('change', function(e) {
         // alert('hd checked!');
         // ;
         e.preventDefault();
@@ -817,7 +817,7 @@ function hdVideoFilterCheck() {
 //
 //
 function _4kVideoFilterCheck() {
-    $(_4K_CHECKBOX).on('change touchstart', function(e) {
+    $(_4K_CHECKBOX).on('change', function(e) {
         e.preventDefault();
         e.stopPropagation();
         state._4k_filter = this.checked ? true : false;
@@ -827,7 +827,7 @@ function _4kVideoFilterCheck() {
 //
 //
 function allowOnlyOneCheckbox() {
-    $('input[type="checkbox"').on('change touchstart', function(e) {
+    $('input[type="checkbox"').on('change', function(e) {
         e.preventDefault();
         e.stopPropagation();
         if (this.checked) {
@@ -845,7 +845,14 @@ function allowOnlyOneCheckbox() {
 //
 //
 function playVideoLightboxClick() {
-    $(RESULTS).on('touchstart click', VIDEO_THUMBNAIL, function(e) {
+    $('body').on('click', VIDEO_THUMBNAIL, function(e) {
+        e.preventDefault();
+        hideMinimizeIcon();
+        openLightbox($(this), $(this).attr('data-index'));
+        return false;
+    });
+
+    $('body').on('click', '.results div', function(e) {
         e.preventDefault();
         hideMinimizeIcon();
         openLightbox($(this), $(this).attr('data-index'));
@@ -856,7 +863,7 @@ function playVideoLightboxClick() {
 //
 //
 function enlargeVideoClick() {
-    $(ENLARGE_BTN).on('touchstart click', function(e) {
+    $(ENLARGE_BTN).on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         state.currentlyEnlarged = true;
@@ -871,7 +878,7 @@ function enlargeVideoClick() {
 //
 //
 function minimizeVideoClick() {
-    $(MINIMIZE_BTN).on('touchstart click', function(e) {
+    $(MINIMIZE_BTN).on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         state.currentlyEnlarged = false;
@@ -886,7 +893,7 @@ function minimizeVideoClick() {
 //
 //
 function lightboxCarouselVideoClick() {
-    $(LIGHTBOX).on('touchstart click', '.slick-slide', function(e) {
+    $(LIGHTBOX).on('click', '.slick-slide', function(e) {
         e.preventDefault();
         e.stopPropagation();
         updateCurrentVideo($(this).children(VIDEO_THUMBNAIL));
@@ -896,7 +903,7 @@ function lightboxCarouselVideoClick() {
 //
 //
 function closeLightboxClick() {
-    $(document).on('touchstart click', MODAL_FILTER + ', ' + TIMES_ICON, function(e) {
+    $(document).on('click', MODAL_FILTER + ', ' + TIMES_ICON, function(e) {
         e.preventDefault();
         e.stopPropagation();
         if (e.target == $(MODAL_FILTER)[0] || e.target == $(TIMES_ICON)[0]) {
@@ -911,7 +918,7 @@ function closeLightboxClick() {
 //
 //
 function titleClick() {
-    $(TITLE).on('touchstart click', function(e) {
+    $(TITLE).on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         location.reload();
@@ -922,7 +929,7 @@ function titleClick() {
 //
 //
 function missionStatementClick() {
-    $(MISSION).on('touchstart click', function(e) {
+    $(MISSION).on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         smoothScroll('.banner');
@@ -937,7 +944,7 @@ function missionStatementClick() {
 //
 function liveVideoClick() {
     live_channels.forEach(function(channel) {
-        $(channel.selector).on('touchstart click', function(e) {
+        $(channel.selector).on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             state.mobile ? smoothScroll('main') : smoothScroll('main', true);
@@ -959,7 +966,7 @@ function liveVideoClick() {
 //
 //
 function _4kVideoClick() {
-    $(_4K_NAV_ITEM).on('touchstart click', function(e) {
+    $(_4K_NAV_ITEM).on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         state.mobile ? smoothScroll('main') : smoothScroll('main', true);
@@ -977,7 +984,7 @@ function _4kVideoClick() {
 }
 
 function mobileNavClicks() {
-   $(HEADER_NAV).on('touchstart', function(e) {
+   $(HEADER_NAV).on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         
@@ -985,7 +992,7 @@ function mobileNavClicks() {
         return false;
     });
 
-    $(SEARCH_NAV).on('touchstart', function(e) {
+    $(SEARCH_NAV).on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         
@@ -993,7 +1000,7 @@ function mobileNavClicks() {
         return false;
     });
 
-    // $(window).on('touchstart', function(e) {
+    // $(window).on('', function(e) {
     //     e.preventDefault();
     //     e.stopPropagation();
     //     if (e.target != SEARCH_DROPDOWN_CONTENT) {
@@ -1060,6 +1067,7 @@ $(function() {
     searchEventListeners();
     lightboxEventListeners();
 
+    searchVideoById('LY19rHKAaAg');
 
     searchLiveVideosToken('live', "CGQQAA", 10, printToConsole, 50);
 });
