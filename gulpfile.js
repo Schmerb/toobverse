@@ -1,7 +1,7 @@
 'use strict'
 
 const gulp        = require('gulp'),
-    //   babel       = require('gulp-babel'),
+      babel       = require('gulp-babel'),
     //   browserify  = require('gulp-browserify'),
 	  minify      = require('gulp-minify'),
 	  minifyCSS   = require('gulp-clean-css'),
@@ -16,6 +16,9 @@ const JS_DEST = 'build';
 gulp.task('build_js', () => {
     return gulp.src(JS_SRC)
         .pipe(concat('bundle.js'))
+        .pipe(babel({
+            presets: ['env']
+        }))
         .pipe(minify({
             min: '.js'
         }))

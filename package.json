@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/Schmerb/toobverse#readme",
   "devDependencies": {
+    "babel-preset-env": "^1.6.1",
     "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0",
     "gulp-clean-css": "^3.9.0",
     "gulp-concat": "^2.6.1",
     "gulp-minify": "^2.1.0",

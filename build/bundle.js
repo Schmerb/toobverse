@@ -1,4 +1,6 @@
-var category_ids = { 
+'use strict';
+
+var category_ids = {
     film_animation: 1,
     auto_vehicles: 2,
     music: 10,
@@ -28,56 +30,45 @@ var category_ids = {
     shorts: 42,
     shows: 43,
     trailers: 44
-}
+};
 
-var live_channels = [
-    {
-        selector: '.live',
-        text: 'Live Channels',
-        category: 'all'
-    },
-    {
-        selector: '.live-all',
-        text: 'Live Channels',
-        category: 'all'
-    },
-    {
-        selector: '.live-music',
-        text: 'Live Music Channels',
-        category: category_ids.music
-    },
-    {
-        selector: '.live-gaming',
-        text: 'Live Gaming Channels',
-        category: category_ids.gaming
-    },
-    {
-        selector: '.live-sports',
-        text: 'Live Sports Channels',
-        category: category_ids.sports
-    },
-    {
-        selector: '.live-animals',
-        text: 'Live Animal Channels',
-        category: category_ids.pets_animals
-    },
-    {
-        selector: '.live-animation',
-        text: 'Live Animation Channels',
-        category: category_ids.film_animation
-    },
-    {
-        selector: '.live-science',
-        text: 'Live Science/Tech Channels',
-        category: category_ids.science_tech
-    },
-    {
-        selector: '.live-travel',
-        text: 'Live Travel Channels',
-        category: category_ids.travel_events
-    },
-]
-
+var live_channels = [{
+    selector: '.live',
+    text: 'Live Channels',
+    category: 'all'
+}, {
+    selector: '.live-all',
+    text: 'Live Channels',
+    category: 'all'
+}, {
+    selector: '.live-music',
+    text: 'Live Music Channels',
+    category: category_ids.music
+}, {
+    selector: '.live-gaming',
+    text: 'Live Gaming Channels',
+    category: category_ids.gaming
+}, {
+    selector: '.live-sports',
+    text: 'Live Sports Channels',
+    category: category_ids.sports
+}, {
+    selector: '.live-animals',
+    text: 'Live Animal Channels',
+    category: category_ids.pets_animals
+}, {
+    selector: '.live-animation',
+    text: 'Live Animation Channels',
+    category: category_ids.film_animation
+}, {
+    selector: '.live-science',
+    text: 'Live Science/Tech Channels',
+    category: category_ids.science_tech
+}, {
+    selector: '.live-travel',
+    text: 'Live Travel Channels',
+    category: category_ids.travel_events
+}];
 
 'use strict';
 
@@ -109,7 +100,7 @@ var EXPLORE_BTN = '#explore-btn';
 var EXPLORE = '.explore';
 var LIVE = '.live';
 var MISSION = '.mission';
-var _4K_NAV_ITEM = '.nav-4k'
+var _4K_NAV_ITEM = '.nav-4k';
 var HEADER_NAV = '.header-nav';
 var DROPDOWN_CONTENT = '.dropdown-content';
 
@@ -143,7 +134,7 @@ var NEW_SEARCH_TIMES_LABEL = '#new-search-times-label';
 var TIMES_ICON = '#times';
 var ENLARGE_BTN = '#enlarge';
 var MINIMIZE_BTN = '#minimize';
-var RESULT_CAROUSEL  = '#result-carousel';
+var RESULT_CAROUSEL = '#result-carousel';
 var MODAL_FILTER = '.modal-filter';
 var FRAME_CONTAINER = '.frame-container';
 var FRAME = '#frame';
@@ -152,7 +143,6 @@ var CHANNEL_NAME = '#channel-name';
 var MONTH = '#month';
 var YEAR = '#year';
 var CHANNEL_OUTER_WRAP = '#channel-outer-wrap';
-
 
 //================================================================================
 // Display user search results to screen
@@ -164,30 +154,14 @@ var CHANNEL_OUTER_WRAP = '#channel-outer-wrap';
 // displaying these to the screen
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function displayResults(resp) {
-    var videos = resp.items.map(function(video, index) {
-        var $video_img = `<div>
-                            <img class="video-thumbnail" 
-                                 id="${video.id.videoId}"
-                                 src="${video.snippet.thumbnails.medium.url}" 
-                                 alt="${video.snippet.description}" 
-                                 data-index=${index}
-                                 data-video-id="${video.id.videoId}"
-                                 data-title="${video.snippet.title}"
-                                 data-channel-id="${video.snippet.channelId}"
-                                 data-channel-title="${video.snippet.channelTitle}"
-                                 data-published="${video.snippet.publishedAt}"
-                                 data-description="${video.snippet.description}"
-                                 data-live-content="${video.snippet.liveBroadcastContent}"
-                            >
-                            <label class="slide-label" for="${video.id.videoId}">${video.snippet.title}</label>
-                          </div>`;
+    var videos = resp.items.map(function (video, index) {
+        var $video_img = '<div>\n                            <img class="video-thumbnail" \n                                 id="' + video.id.videoId + '"\n                                 src="' + video.snippet.thumbnails.medium.url + '" \n                                 alt="' + video.snippet.description + '" \n                                 data-index=' + index + '\n                                 data-video-id="' + video.id.videoId + '"\n                                 data-title="' + video.snippet.title + '"\n                                 data-channel-id="' + video.snippet.channelId + '"\n                                 data-channel-title="' + video.snippet.channelTitle + '"\n                                 data-published="' + video.snippet.publishedAt + '"\n                                 data-description="' + video.snippet.description + '"\n                                 data-live-content="' + video.snippet.liveBroadcastContent + '"\n                            >\n                            <label class="slide-label" for="' + video.id.videoId + '">' + video.snippet.title + '</label>\n                          </div>';
         return $video_img;
     });
     state.thumbnails = videos;
-    $(RESULTS).empty()
-              .append(videos.join(''));
+    $(RESULTS).empty().append(videos.join(''));
     $(RESULTS_CONTAINER).addClass('results-filter');
-    if(resp.items.length > 0) {
+    if (resp.items.length > 0) {
         $(RESULTS).removeClass('hidden');
         $(PAGE_CONTROLS_CONTAINER).removeClass('hidden');
     } else {
@@ -195,8 +169,6 @@ function displayResults(resp) {
         $(PAGE_CONTROLS_CONTAINER).addClass('hidden');
     }
 }
-
-
 
 //================================================================================
 // Helper functions 
@@ -208,8 +180,6 @@ function displayResults(resp) {
 function printToConsole(resp) {
     console.log(resp);
 }
-
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Displays the lightbox, sets the current video and
@@ -234,8 +204,8 @@ function updateCurrentVideo(newVideo) {
     var description = newVideo.attr('data-description');
     var datePublished = newVideo.attr('data-published');
 
-    var embedLink = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-    var channelLink = `https://www.youtube.com/channel/${channelId}`;
+    var embedLink = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
+    var channelLink = 'https://www.youtube.com/channel/' + channelId;
     var timestamp = new Date(Date.parse(datePublished));
     var uploadMonth = timestamp.getMonth();
     var uploadYear = timestamp.getFullYear();
@@ -266,7 +236,7 @@ function setVideoDimensions(enlarge) {
         $(ENLARGE_BTN).addClass('hidden');
         $(MINIMIZE_BTN).addClass('hidden');
         $('label[for="enlarge"]').addClass('hidden');
-        
+
         $(FRAME_CONTAINER).addClass('wide');
         $(TIMES_ICON).addClass('hd-4k');
         $(RESULT_CAROUSEL).addClass('hd-4k');
@@ -405,8 +375,7 @@ function initLightboxCarousel(index) {
         variableWidth: true,
         centerMode: false,
         focusOnSelect: false,
-        responsive: [
-            {
+        responsive: [{
             breakpoint: 1024,
             settings: {
                 slidesToShow: 3,
@@ -414,25 +383,22 @@ function initLightboxCarousel(index) {
                 infinite: false,
                 dots: true
             }
-            },
-            {
+        }, {
             breakpoint: 600,
             settings: {
                 slidesToShow: 2,
                 slidesToScroll: 2
             }
-            },
-            {
+        }, {
             breakpoint: 480,
             settings: {
                 slidesToShow: 1,
                 slidesToScroll: 1
             }
-            }
             // You can unslick at a given breakpoint now by adding:
             // settings: "unslick"
             // instead of a settings object
-        ]
+        }]
     });
     state.isSlick = true;
     // slickEvents();
@@ -456,7 +422,7 @@ function unslickCarousel() {
 // Mobile Vs. Desktop
 // * * * * * * * * * * * * * * * * * * * *
 function checkSizeHandler() {
-    $(document).ready(function() {
+    $(document).ready(function () {
         checkSize();
 
         $(window).resize(checkSize);
@@ -464,7 +430,7 @@ function checkSizeHandler() {
 }
 
 function checkSize() {
-    (Number($("body").css('width').slice(0, -2)) <= 416) ? state.mobile = true : state.mobile = false;
+    Number($("body").css('width').slice(0, -2)) <= 416 ? state.mobile = true : state.mobile = false;
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -474,9 +440,9 @@ function checkSize() {
 // scrolls back above its container
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function fixedSearchBar() {
-    $(window).scroll(function(e) {
+    $(window).scroll(function (e) {
         var scroll = $(window).scrollTop();
-        if(scroll > $(window).height()) {
+        if (scroll > $(window).height()) {
             $(SEARCH_FORM).addClass('fixed-search-bar');
             $(SEARCH_NAV).addClass('fixed-search-bar');
             $(SEARCH_DROPDOWN_CONTENT).addClass('fixed');
@@ -488,9 +454,8 @@ function fixedSearchBar() {
             $(SEARCH_DROPDOWN_CONTENT).removeClass('fixed');
             $(FORM_CONTAINER).removeClass('form-backdrop');
             $(RESULTS + ' div:first-of-type').removeClass('mobile-results-adjust');
-            $(USER_QUERY_LABEL).css({marginTop: ''});
+            $(USER_QUERY_LABEL).css({ marginTop: '' });
         }
-        
     });
 }
 
@@ -505,10 +470,10 @@ function dynamicQueryLabelFontSize(target, container) {
     $target.css('font-size', '');
     $container.css('line-height', '');
 
-    while($target.height() > $container.height()) {
-        $target.css('font-size', (parseInt($target.css('font-size').slice(0,-2) - 1)) + 'px');
+    while ($target.height() > $container.height()) {
+        $target.css('font-size', parseInt($target.css('font-size').slice(0, -2) - 1) + 'px');
         fontSizeChanged++;
-    }  
+    }
     if (fontSizeChanged) {
         $container.css('line-height', $target.css('font-size'));
     }
@@ -527,8 +492,6 @@ function smoothScroll(target, fixed) {
     }, 800);
 }
 
-
-
 //================================================================================
 // API handlers
 //================================================================================
@@ -537,12 +500,12 @@ function smoothScroll(target, fixed) {
 // Handler to make YouTube API search method calls and
 // makes calls to store and display search results
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-function searchYoutubeHandler() { 
-   if(state._4k_filter) {
+function searchYoutubeHandler() {
+    if (state._4k_filter) {
         _4kVideoHandler(state.user_query);
     } else {
         var quality = state.hd_filter ? 'high' : 'any';
-        searchYouTube(state.user_query, quality, 'any', 'relevance', function(resp) {
+        searchYouTube(state.user_query, quality, 'any', 'relevance', function (resp) {
             state.search_results = resp;
             $(USER_QUERY_LABEL).removeClass('hidden');
             $(USER_QUERY).text(state.user_query);
@@ -565,9 +528,9 @@ function searchYoutubeHandler() {
 function searchByPageTokenHandler(pageToken) {
     var query = state.user_query;
     var quality = 'any';
-    
+
     if (state.live_browse) {
-        searchLiveVideosToken('live', pageToken, state.currentLiveCategory, function(resp) {
+        searchLiveVideosToken('live', pageToken, state.currentLiveCategory, function (resp) {
             state.search_results = resp;
             displayResults(resp);
         }, 50);
@@ -575,25 +538,24 @@ function searchByPageTokenHandler(pageToken) {
         if (state.hd_filter) {
             quality = 'high';
         } else if (state._4k_filter) {
-            query = `${state.user_query} 4K`;
+            query = state.user_query + ' 4K';
             quality = 'high';
         } else if (state._4k_browse) {
             query = '4K';
             quality = 'high';
         }
-        searchYouTubePageToken(query, quality, 'any', 'relevance', pageToken, function(resp) {
-                state.search_results = resp;
-                displayResults(resp);
+        searchYouTubePageToken(query, quality, 'any', 'relevance', pageToken, function (resp) {
+            state.search_results = resp;
+            displayResults(resp);
         }, 50);
     }
 }
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Handles all API calls for live broadcast content
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function liveVideoHandler(category_id) {
-    searchLiveVideos('live', category_id, function(resp) {
+    searchLiveVideos('live', category_id, function (resp) {
         state.search_results = resp;
         resetPageNumber();
         displayResults(resp);
@@ -605,12 +567,12 @@ function liveVideoHandler(category_id) {
 // query is given, defaults to popular general 4K videos
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function _4kVideoHandler(query) {
-    var q = arguments.length > 0 ? `${query} 4K` : '4K';
-    searchYouTube(q, 'high', 'any',  'relevance', function(resp) {
+    var q = arguments.length > 0 ? query + ' 4K' : '4K';
+    searchYouTube(q, 'high', 'any', 'relevance', function (resp) {
         state.search_results = resp;
         $(USER_QUERY_LABEL).removeClass('hidden');
         $(RESULTS_TYPE).text('4K');
-        if(q.length > 2) {
+        if (q.length > 2) {
             $(USER_QUERY).text(query);
             showUserQuery();
         }
@@ -619,7 +581,6 @@ function _4kVideoHandler(query) {
         dynamicQueryLabelFontSize(SEARCH_RESULTS_SPAN, USER_QUERY_LABEL);
     }, 50);
 }
-
 
 //================================================================================
 // API Calls
@@ -631,7 +592,7 @@ var YOUTUBE_BASE_URL = 'https://www.googleapis.com/youtube/v3/';
 // Searches YouTube data API by search term given by user
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function searchYouTube(searchTerm, quality, type, order, callback, maxResults) {
-    if(arguments.length == 1) {
+    if (arguments.length == 1) {
         callback = printToConsole;
         maxResults = 50;
     } else if (arguments.length == 4) {
@@ -644,7 +605,7 @@ function searchYouTube(searchTerm, quality, type, order, callback, maxResults) {
         q: searchTerm,
         type: 'video',
         videoDefinition: quality, //any,high,standard
-        videoType: type,          //any,episode,movie
+        videoType: type, //any,episode,movie
         order: order,
         maxResults: maxResults
     };
@@ -655,9 +616,8 @@ function searchYouTube(searchTerm, quality, type, order, callback, maxResults) {
 // Searches YouTube data API by page token to fetch
 // previous and next pages in search results data
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-function searchYouTubePageToken(searchTerm, quality, type, order, 
-                                pageToken, callback, maxResults) {
-    if(arguments.length == 1) {
+function searchYouTubePageToken(searchTerm, quality, type, order, pageToken, callback, maxResults) {
+    if (arguments.length == 1) {
         callback = printToConsole;
         maxResults = 50;
     } else if (arguments.length == 4) {
@@ -670,7 +630,7 @@ function searchYouTubePageToken(searchTerm, quality, type, order,
         q: searchTerm,
         type: 'video',
         videoDefinition: quality, //any,high,standard
-        videoType: type,          //any,episode,movie
+        videoType: type, //any,episode,movie
         order: order,
         pageToken: pageToken,
         maxResults: maxResults
@@ -683,7 +643,7 @@ function searchYouTubePageToken(searchTerm, quality, type, order,
 // based on video category ID's
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function searchLiveVideos(status, category_id, callback, maxResults) {
-    if(arguments.length == 2) {
+    if (arguments.length == 2) {
         callback = printToConsole;
         maxResults = 25;
     } else if (arguments.length == 3) {
@@ -706,7 +666,7 @@ function searchLiveVideos(status, category_id, callback, maxResults) {
 }
 
 function searchLiveVideosToken(status, pageToken, category_id, callback, maxResults) {
-    if(arguments.length == 3) {
+    if (arguments.length == 3) {
         callback = printToConsole;
         maxResults = 25;
     } else if (arguments.length == 4) {
@@ -745,9 +705,9 @@ function searchPopularVideos() {
 // Searches YouTube data API by video ID number
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 function searchVideoById(video_ID, callback) {
-    if(arguments.length == 1) {
+    if (arguments.length == 1) {
         callback = printToConsole;
-    } 
+    }
     var VIDEOS_URL = YOUTUBE_BASE_URL + 'videos';
     var query = {
         key: 'AIzaSyCtbQ7eOypMc7OKBSGFs46aIL6Ozmmeygw',
@@ -776,12 +736,10 @@ function internetVideoArchive() {
         format: 'json',
         'subscription-key': '66319ae0cd76409cb63e30a70eaad1c2'
     };
-    $.getJSON(ivaUrl, query, function(resp) {
+    $.getJSON(ivaUrl, query, function (resp) {
         // console.log('IVA', resp)
     });
 }
-
-
 
 //================================================================================
 // Event Listeners
@@ -790,7 +748,7 @@ function internetVideoArchive() {
 //
 //
 function scrollToSearchBar() {
-    $(EXPLORE).on('click', function(e) {
+    $(EXPLORE).on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         smoothScroll('main');
@@ -801,17 +759,17 @@ function scrollToSearchBar() {
 //
 //
 function scrollToTop() {
-    $(TOP).on('click', function(e) {
+    $(TOP).on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         smoothScroll('.banner');
     });
 }
-    
+
 //
 //
 function searchFormSubmit() {
-    $(SEARCH_FORM).on('submit', function(e) {
+    $(SEARCH_FORM).on('submit', function (e) {
         e.preventDefault();
         e.stopPropagation();
         smoothScroll('main', true);
@@ -823,13 +781,10 @@ function searchFormSubmit() {
     });
 }
 
-
-
-
 //
 //
 function getNextPageClick() {
-    $(NEXT_PAGE_BTN).on('click', function(e) {
+    $(NEXT_PAGE_BTN).on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         if (state.search_results.hasOwnProperty('nextPageToken')) {
@@ -837,7 +792,7 @@ function getNextPageClick() {
             $(PREV_PAGE_BTN).removeClass('toggled');
             $(PAGE_NUM_WRAP).removeClass('hidden');
             $(PAGE_NUM).text(++state.currentPageNum);
-            if($(this).hasClass('bottom')) {
+            if ($(this).hasClass('bottom')) {
                 // console.log('bottom');
                 smoothScroll('main', true);
             } else {
@@ -852,16 +807,16 @@ function getNextPageClick() {
 //
 //
 function getPrevPageClick() {
-    $(PREV_PAGE_BTN).on('click', function(e) {
+    $(PREV_PAGE_BTN).on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         if (state.search_results.hasOwnProperty('prevPageToken')) {
             searchByPageTokenHandler(state.search_results.prevPageToken);
             $(PAGE_NUM).text(--state.currentPageNum);
             state.currentPageNum == 1 ? $(PREV_PAGE_BTN).addClass('toggled') : null;
-            if($(this).hasClass('bottom')) {
+            if ($(this).hasClass('bottom')) {
                 smoothScroll('main', true);
-            } 
+            }
         } else {
             $(PREV_PAGE_BTN).addClass('toggled');
         }
@@ -871,7 +826,7 @@ function getPrevPageClick() {
 //
 //
 function hdVideoFilterCheck() {
-    $(HD_CHECKBOX).on('change', function(e) {
+    $(HD_CHECKBOX).on('change', function (e) {
         e.preventDefault();
         e.stopPropagation();
         state.hd_filter = this.checked ? true : false;
@@ -881,7 +836,7 @@ function hdVideoFilterCheck() {
 //
 //
 function _4kVideoFilterCheck() {
-    $(_4K_CHECKBOX).on('change', function(e) {
+    $(_4K_CHECKBOX).on('change', function (e) {
         e.preventDefault();
         e.stopPropagation();
         state._4k_filter = this.checked ? true : false;
@@ -891,7 +846,7 @@ function _4kVideoFilterCheck() {
 //
 //
 function allowOnlyOneCheckbox() {
-    $('input[type="checkbox"').on('change', function(e) {
+    $('input[type="checkbox"').on('change', function (e) {
         e.preventDefault();
         e.stopPropagation();
         if (this.checked) {
@@ -909,14 +864,14 @@ function allowOnlyOneCheckbox() {
 //
 //
 function playVideoLightboxClick() {
-    $('body').on('click', VIDEO_THUMBNAIL, function(e) {
+    $('body').on('click', VIDEO_THUMBNAIL, function (e) {
         e.preventDefault();
         e.stopPropagation();
         hideMinimizeIcon();
         openLightbox($(this), $(this).attr('data-index'));
         // return false;
     });
-    $('.results').on('click', VIDEO_THUMBNAIL, function(e) {
+    $('.results').on('click', VIDEO_THUMBNAIL, function (e) {
         e.preventDefault();
         e.stopPropagation();
         hideMinimizeIcon();
@@ -928,7 +883,7 @@ function playVideoLightboxClick() {
 //
 //
 function enlargeVideoClick() {
-    $(ENLARGE_BTN).on('click', function(e) {
+    $(ENLARGE_BTN).on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         state.currentlyEnlarged = true;
@@ -943,7 +898,7 @@ function enlargeVideoClick() {
 //
 //
 function minimizeVideoClick() {
-    $(MINIMIZE_BTN).on('click', function(e) {
+    $(MINIMIZE_BTN).on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         state.currentlyEnlarged = false;
@@ -958,7 +913,7 @@ function minimizeVideoClick() {
 //
 //
 function lightboxCarouselVideoClick() {
-    $(LIGHTBOX).on('click', '.slick-slide', function(e) {
+    $(LIGHTBOX).on('click', '.slick-slide', function (e) {
         e.preventDefault();
         e.stopPropagation();
         updateCurrentVideo($(this).children(VIDEO_THUMBNAIL));
@@ -968,7 +923,7 @@ function lightboxCarouselVideoClick() {
 //
 //
 function closeLightboxClick() {
-    $(document).on('click', MODAL_FILTER + ', ' + TIMES_ICON, function(e) {
+    $(document).on('click', MODAL_FILTER + ', ' + TIMES_ICON, function (e) {
         e.preventDefault();
         e.stopPropagation();
         if (e.target == $(MODAL_FILTER)[0] || e.target == $(TIMES_ICON)[0]) {
@@ -983,7 +938,7 @@ function closeLightboxClick() {
 //
 //
 function titleClick() {
-    $(TITLE).on('click', function(e) {
+    $(TITLE).on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         location.reload();
@@ -994,7 +949,7 @@ function titleClick() {
 //
 //
 function missionStatementClick() {
-    $(MISSION).on('click', function(e) {
+    $(MISSION).on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         smoothScroll('.banner');
@@ -1004,12 +959,11 @@ function missionStatementClick() {
     });
 }
 
-
 //
 //
 function liveVideoClick() {
-    live_channels.forEach(function(channel) {
-        $(channel.selector).on('click', function(e) {
+    live_channels.forEach(function (channel) {
+        $(channel.selector).on('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             state.mobile ? smoothScroll('main') : smoothScroll('main', true);
@@ -1031,7 +985,7 @@ function liveVideoClick() {
 //
 //
 function _4kVideoClick() {
-    $(_4K_NAV_ITEM).on('click', function(e) {
+    $(_4K_NAV_ITEM).on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         state.mobile ? smoothScroll('main') : smoothScroll('main', true);
@@ -1049,33 +1003,31 @@ function _4kVideoClick() {
 }
 
 function mobileNavClicks() {
-   $(HEADER_NAV).on('click', function(e) {
+    $(HEADER_NAV).on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        
+
         $(DROPDOWN_CONTENT).toggleClass('show-nav');
         return false;
     });
 
-    $(SEARCH_NAV).on('click', function(e) {
+    $(SEARCH_NAV).on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        
+
         $(SEARCH_DROPDOWN_CONTENT).toggleClass('show-nav');
         return false;
     });
-
 }
 
 //
 //
 function slickEvents() {
     // On edge hit
-    $('.responsive').on('edge', function(event, slick, direction){
+    $('.responsive').on('edge', function (event, slick, direction) {
         // console.log('edge was hit')
     });
 }
-
 
 //================================================================================
 // Event groups
@@ -1114,17 +1066,12 @@ function lightboxEventListeners() {
     minimizeVideoClick();
 }
 
-
 //================================================================================
 // Entry Point
 //================================================================================
-$(function() {
+$(function () {
     navEventListeners();
     utilitiesEventListeners();
     searchEventListeners();
     lightboxEventListeners();
-
-    // searchVideoById('LY19rHKAaAg');
-
-    // searchLiveVideosToken('live', "CGQQAA", 10, printToConsole, 50);
 });

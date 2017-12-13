@@ -31,6 +31,9 @@ Toobverse is a platform for users to search for videos on Youtube and stream hig
     * [Browsersync](https://www.browsersync.io/)
         * Automation tool to make the development process faster. 
         * Allows for multiple screens to reload live and all interactions are in synchronization, mirroring actions across every browser on any device located on local network.
-
+    * [Browserify](http://browserify.org/)
+        * npm module support for browser
+    * [Babel](https://babeljs.io/) + [Webpack](https://webpack.js.org/) 
+        * ES6 support for older environments (IE8 etc)
 ## Credits
 * Tobin Bridge Night image -- photo by [Max McClaskie](https://www.instagram.com/maxgeorgem/)
