@@ -1,0 +1,26 @@
+{
+  "name": "toobverse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Schmerb/toobverse.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Schmerb/toobverse/issues"
+  },
+  "homepage": "https://github.com/Schmerb/toobverse#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.9.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-minify": "^2.1.0",
+    "rename": "^1.0.4"
+  }
+}
